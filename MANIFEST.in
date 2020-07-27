@@ -1,0 +1,15 @@
+include *.txt
+include Doxyfile
+include LICENSE
+include tox.ini
+recursive-include docs *.bat
+recursive-include docs *.css
+recursive-include docs *.html
+recursive-include docs *.js
+recursive-include docs *.png
+recursive-include docs *.sty
+recursive-include docs *.tex
+recursive-include docs Makefile
+recursive-include example *.py
+recursive-include tests *.in
+recursive-include tests *.py
