@@ -29,7 +29,7 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/GreenPonik/GreenPonik_WaterPump_Driver",
     license="MIT",
-    install_requires=["board, busio, smbus2"],
+    install_requires=["board", "busio", "smbus2"],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
