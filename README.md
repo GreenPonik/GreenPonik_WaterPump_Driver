@@ -35,7 +35,7 @@ or
 ```
 ```Python
 
-from GreenPonik_WaterPump_Driver import pump_on, pump_off
+from GreenPonik_WaterPump_Driver import i2c_scanner, read_byte_data
 
 ```
 
