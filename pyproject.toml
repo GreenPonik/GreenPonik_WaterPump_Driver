@@ -4,6 +4,5 @@
 requires = ["setuptools>=49.2.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
-[check-manifest]
-ignore=
-    docs
+[tool.check-manifest]
+ignore = ["docs/"]
