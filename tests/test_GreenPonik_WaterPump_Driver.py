@@ -3,7 +3,7 @@
 # setup.py that excludes installing the "tests" package
 
 import unittest
-from GreenPonik_WaterPump_Driver import i2c_scanner, pump_run
+from GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver import i2c_scanner, pump_run
 
 
 class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
