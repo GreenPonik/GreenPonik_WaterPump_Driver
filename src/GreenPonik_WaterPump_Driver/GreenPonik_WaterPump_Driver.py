@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 from time import sleep
 from smbus2 import SMBus
@@ -8,20 +8,20 @@ import busio
 
 
 I2C_REGISTER = {
-    "TYPE": 0x00,				# i2c Read Only
-    "FIRMWARE": 0x01,			# i2c Read Only
-    "UUID": 0x02,				# i2c Read Only
-    "I2C_ADDRESS": 0x03,		# i2c Read / Write
-    "PUMP_1_STATE": 0x05, 		# i2c Read / Write
-    "PUMP_1_LED": 0x06,   		# i2c Read / Write
-    "PUMP_2_STATE": 0x07, 		# i2c Read / Write
-    "PUMP_2_LED": 0x08,   		# i2c Read / Write
-    "PUMP_3_STATE": 0x9, 		# i2c Read / Write
-    "PUMP_3_LED": 0x10,  		# i2c Read / Write
-    "PUMP_4_STATE": 0x11, 		# i2c Read / Write
-    "PUMP_4_LED": 0x12,   		# i2c Read / Write
-    "WATER_PUMP_STATE": 0x13, 	# i2c Read / Write
-    "WATER_PUMP_LED": 0x14, 	# i2c Read / Write
+    "TYPE": 0x00,  # i2c Read Only
+    "FIRMWARE": 0x01,  # i2c Read Only
+    "UUID": 0x02,  # i2c Read Only
+    "I2C_ADDRESS": 0x03,  # i2c Read / Write
+    "PUMP_1_STATE": 0x05,  # i2c Read / Write
+    "PUMP_1_LED": 0x06,  # i2c Read / Write
+    "PUMP_2_STATE": 0x07,  # i2c Read / Write
+    "PUMP_2_LED": 0x08,  # i2c Read / Write
+    "PUMP_3_STATE": 0x9,  # i2c Read / Write
+    "PUMP_3_LED": 0x10,  # i2c Read / Write
+    "PUMP_4_STATE": 0x11,  # i2c Read / Write
+    "PUMP_4_LED": 0x12,  # i2c Read / Write
+    "WATER_PUMP_STATE": 0x13,  # i2c Read / Write
+    "WATER_PUMP_LED": 0x14,  # i2c Read / Write
 }
 
 I2C_DEVICES_TYPE = {
@@ -117,10 +117,9 @@ def pump_run(self, addr, register, command):
     @param command > byte order 0x00 = OFF / 0x01 = ON
     """
     try:
-        device = self.read_byte_data(addr, I2C_REGISTER['TYPE'])
-        if I2C_DEVICES_TYPE['WATERPUMP'] != device:
-            raise Exception(
-                "Current device type %x indicate it's not a pump" % device)
+        device = self.read_byte_data(addr, I2C_REGISTER["TYPE"])
+        if I2C_DEVICES_TYPE["WATERPUMP"] != device:
+            raise Exception("Current device type %x indicate it's not a pump" % device)
         else:
             self.write_byte_data(addr, register, command)
     except Exception as e:
