@@ -35,8 +35,8 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    packages=find_packages(where='src/GreenPonik_WaterPump_Driver'),  # Required
-    package_dir={'': 'src/GreenPonik_WaterPump_Driver'},  # Optional
+    packages=find_packages(where='src'),  # Required
+    package_dir={'': 'src'},  # Optional
     python_requires='>=3.6',
     project_urls={  # Optional
         'Source': 'https://github.com/GreenPonik/GreenPonik_WaterPump_Driver/',
