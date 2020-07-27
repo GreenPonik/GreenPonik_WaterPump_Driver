@@ -8,6 +8,9 @@
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=GreenPonik_GreenPonik_WaterPump_Driver&metric=security_rating)](https://sonarcloud.io/dashboard?id=GreenPonik_GreenPonik_WaterPump_Driver)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=GreenPonik_GreenPonik_WaterPump_Driver&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=GreenPonik_GreenPonik_WaterPump_Driver)
 
+
+![Upload Python Package](https://github.com/GreenPonik/GreenPonik_WaterPump_Driver/workflows/Upload%20Python%20Package/badge.svg?event=release)
+
 ## GreenPonik_WaterPump_Driver.py Library for Raspberry pi
 ---------------------------------------------------------
 This is the python side driver to manage GreenPonik WaterPump devices
