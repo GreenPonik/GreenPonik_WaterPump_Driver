@@ -1,1 +1,1 @@
-adafruit-circuitpython-tsl2561==3.2.2
+smbus2==0.3.0
