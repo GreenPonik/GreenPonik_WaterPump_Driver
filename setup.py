@@ -24,7 +24,7 @@ setup(
     version=load_version(),
     author="GreenPonik SAS",
     author_email="contact@greenponik.com",
-    description="GreenPonik WaterPump i2c driver Python3 on raspberry pi",
+    description="GreenPonik WaterPump i2c driver",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/GreenPonik/GreenPonik_WaterPump_Driver",
@@ -42,6 +42,6 @@ setup(
         'Source': 'https://github.com/GreenPonik/GreenPonik_WaterPump_Driver/',
         'Bug Reports': 'https://github.com/GreenPonik/GreenPonik_WaterPump_Driver/issues',
     },
-    keywords="GreenPonik hydroponics WaterPump i2c driver python hardware diy iot raspberry pi",
+    keywords="GreenPonik hydroponics WaterPump i2c driver python hardware diy iot",
     py_modules=["GreenPonik_WaterPump_Driver"],
 )
