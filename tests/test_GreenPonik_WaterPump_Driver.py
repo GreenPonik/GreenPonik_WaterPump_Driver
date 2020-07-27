@@ -3,21 +3,18 @@
 # setup.py that excludes installing the "tests" package
 
 import unittest
-
-from GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver import i2c_scanner, pump_on, pump_off
+from GreenPonik_WaterPump_Driver import i2c_scanner, pump_run
 
 
 class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
 
-    i2c_slaves = i2c_scanner()
+    def test_i2c_scanner(self):
+        i2c_devices = i2c_scanner()
+        self.assertListEqual(i2c_devices)
     
 
-    def test_pump_on(self):
-        self.assertListEqual(pump_on())
-
-    
-    def test_pump_off(self):
-        self.assertListEqual(pump_off())
+    def test_pump_run(self):
+        self.assertListEqual(pump_run())
 
 
 if __name__ == '__main__':

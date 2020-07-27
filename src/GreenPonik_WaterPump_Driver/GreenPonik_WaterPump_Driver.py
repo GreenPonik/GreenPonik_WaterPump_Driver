@@ -23,20 +23,21 @@ I2C_REGISTER = {
     "WATER_PUMP_LED": 0x14, 	# i2c Read / Write
 }
 
-
-"""@brief
-instanciate i2c bus on the second raspberry bus
-"""
-i2c = busio.i2c(board.SCL, board.SDA)
-# Give the I2C device time to settle
-sleep(2)
+I2C_DEVICES_TYPE = {
+    "WATERPUMP": 0x01,
+}
 
 
-"""@brief
-i2c Scanner use to return the list of all addresses find on the i2c bus
-"""
 def i2c_scanner():
-    try:
+"""
+@brief i2c Scanner use to return the list of all addresses find on the i2c bus
+@return list of addresses
+"""
+   try:
+        # instanciate i2c bus on the second raspberry bus
+        i2c = busio.i2c(board.SCL, board.SDA)
+        # Give the I2C device time to settle
+        sleep(2)
         i2c_slaves = i2c.scan()
         sleep(1)
         return i2c_slaves
@@ -44,74 +45,77 @@ def i2c_scanner():
         print("Exception occured", e)
 
 
-"""@brief
-turn pump ON
+def read_byte_data(addr, register):
 """
-def pump_on(addr, register):
-	try:
-		with SMBus(1) as bus:
-			device = get_device_type(addr)
-			if 0x01 != device:
-				raise Exception("Current device is not a pump") 
-			else:	
-				bus.write_byte_data(addr, register, 0x01)
-	except Exception as e:
-		print("Exception occured", e)
-
-
-"""@brief
-turn pump OFF
+@brief read byte data from the device
+@param addr > byte i2c address of the device
+@param register > byte i2c register to read
 """
-def pump_off(addr, register):
-	try:
-		with SMBus(1) as bus:
-			device = get_device_type(addr)
-			if 0x01 != device:
-				raise Exception("Current device is not a pump") 
-			else:	
-				bus.write_byte_data(addr, register, 0x01)
-	except Exception as e:
-		print("Exception occured", e)
+   try:
+        with SMBus(1) as bus:
+            byteData = bus.read_byte_data(addr, register)
+            sleep(0.450)
+            return byteData
+    except Exception as e:
+        print("Exception occured", e)
 
 
-"""@brief
-get the TYPE of device
-TYPE is 1 for WaterPump
+def write_byte_data(addr, register, value):
 """
-def get_device_type(addr):
-	try:
-		with SMBus(1) as bus:
-			deviceType = bus.read_byte_data(addr, I2C_REGISTER["TYPE"])
-			sleep(0.450)
-			return deviceType
-	except Exception as e:
-		print("Exception occured", e)
-
-
-"""@brief
-get the FIRMWARE of device
-FIRMWARE is on byte long and need to be divide by 100
+@brief write byte data on the device
+@param addr > byte i2c address of the device
+@param register > byte i2c register to write
 """
-def get_device_firmware(addr):
-	try:
-		with SMBus(1) as bus:
-			deviceFirm = bus.read_byte_data(addr, I2C_REGISTER["FIRMWARE"])
-			sleep(0.450)
-			return deviceFirm
-	except Exception as e:
-		print("Exception occured", e)
+   try:
+        with SMBus(1) as bus:
+            bus.write_byte_data(addr, register, value)
+    except Exception as e:
+        print("Exception occured", e)
 
 
-"""@brief
-get the UUID of device
-UUID is 8 bytes long
+def read_block_data(addr, register, size = 8):
 """
-def get_device_UUID(addr):
-	try:
-		with SMBus(1) as bus:
-			deviceUUID = bus.read_i2c_block_data(addr, I2C_REGISTER["UUID"], 8)
-			sleep(0.450)
-			return deviceUUID
-	except Exception as e:
-		print("Exception occured", e)
+@brief read block byte data from the device
+@param addr > byte i2c address of the device
+@param register > byte i2c register to read
+@param size > byte size of block read from i2c bus
+"""
+   try:
+        with SMBus(1) as bus:
+            data = bus.read_i2c_block_data(addr, register, size)
+            sleep(0.450)
+            return data
+    except Exception as e:
+        print("Exception occured", e)
 
+
+def write_block_data(addr, register, data):
+"""
+@brief write block byte data on the device
+@param addr > byte i2c address of the device
+@param register > byte i2c register to write
+@param data > array of bytes to be send through i2c bus 
+"""
+   try:
+        with SMBus(1) as bus:
+            bus.write_i2c_block_data(addr, register, data)
+    except Exception as e:
+        print("Exception occured", e)
+
+
+def pump_run(addr, register, command):
+"""
+@brief command pump
+@param addr > byte i2c address of the pump
+@param register > byte i2c register of the pump
+@param command > byte order 0x00 = OFF / 0x01 = ON
+"""
+    try:
+        device = read_byte_data(addr, I2C_REGISTER['TYPE'])
+        if I2C_DEVICES_TYPE['WATERPUMP'] != device:
+            raise Exception(
+                "Current device type %x indicate it's not a pump" % device)
+        else:
+            write_byte_data(addr, register, 0x01)
+    except Exception as e:
+        print("Exception occured", e)
