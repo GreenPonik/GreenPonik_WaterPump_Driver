@@ -25,7 +25,7 @@ This is the python side driver to manage GreenPonik WaterPump devices
 
 ## Installation
 ```shell
-git clone https://github.com/GreenPonik/GreenPonik_WaterPump_Driver.git
+> git clone https://github.com/GreenPonik/GreenPonik_WaterPump_Driver.git
 cd GreenPonik_WaterPump_Driver
 pip3 install -r requirements.txt
 

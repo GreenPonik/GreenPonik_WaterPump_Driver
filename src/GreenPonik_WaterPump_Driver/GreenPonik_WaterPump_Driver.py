@@ -27,6 +27,8 @@ I2C_DEVICES_TYPE = {
     "WATERPUMP": 0x01,
 }
 
+ON = 0x01
+OFF = 0x00
 
 def i2c_scanner():
 """
@@ -39,7 +41,7 @@ def i2c_scanner():
         # Give the I2C device time to settle
         sleep(2)
         i2c_slaves = i2c.scan()
-        sleep(1)
+        i2c.deinit()
         return i2c_slaves
     except Exception as e:
         print("Exception occured", e)
@@ -116,6 +118,6 @@ def pump_run(addr, register, command):
             raise Exception(
                 "Current device type %x indicate it's not a pump" % device)
         else:
-            write_byte_data(addr, register, 0x01)
+            write_byte_data(addr, register, command)
     except Exception as e:
         print("Exception occured", e)
