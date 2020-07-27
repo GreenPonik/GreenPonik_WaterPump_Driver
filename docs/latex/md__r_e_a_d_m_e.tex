@@ -1,46 +1,104 @@
-\hypertarget{md__r_e_a_d_m_e_autotoc_md0}{}\doxysubsection{\#\# Green\+Ponik\+\_\+\+T\+S\+L2561.\+py Library for Raspberry pi}\label{md__r_e_a_d_m_e_autotoc_md0}
-This is the sample code for read light with T\+S\+L2561 sensor.\hypertarget{md__r_e_a_d_m_e_autotoc_md1}{}\doxysubsection{Table of Contents}\label{md__r_e_a_d_m_e_autotoc_md1}
+\href{https://sonarcloud.io/dashboard?id=GreenPonik_GreenPonik_WaterPump_Driver}{\texttt{ }} \href{https://sonarcloud.io/dashboard?id=GreenPonik_GreenPonik_WaterPump_Driver}{\texttt{ }}
+
+\href{https://sonarcloud.io/dashboard?id=GreenPonik_GreenPonik_WaterPump_Driver}{\texttt{ }} \href{https://sonarcloud.io/dashboard?id=GreenPonik_GreenPonik_WaterPump_Driver}{\texttt{ }}
+
+\href{https://sonarcloud.io/dashboard?id=GreenPonik_GreenPonik_WaterPump_Driver}{\texttt{ }} \href{https://sonarcloud.io/dashboard?id=GreenPonik_GreenPonik_WaterPump_Driver}{\texttt{ }} \href{https://sonarcloud.io/dashboard?id=GreenPonik_GreenPonik_WaterPump_Driver}{\texttt{ }}
+
+\hypertarget{md__r_e_a_d_m_e_autotoc_md0}{}\doxysubsection{\#\# Green\+Ponik\+\_\+\+Water\+Pump\+\_\+\+Driver.\+py Library for Raspberry pi}\label{md__r_e_a_d_m_e_autotoc_md0}
+This is the python side driver to manage Green\+Ponik Water\+Pump devices\hypertarget{md__r_e_a_d_m_e_autotoc_md1}{}\doxysubsection{Table of Contents}\label{md__r_e_a_d_m_e_autotoc_md1}
 
 \begin{DoxyItemize}
-\item \href{\#GreenPoniktsl2561py-library-for-raspberry-pi}{\texttt{ Green\+Ponik\+\_\+\+T\+S\+L2561.\+py Library for Raspberry pi}}
+\item \href{\#GreenPonikWaterPumpDriverpy-library-for-raspberry-pi}{\texttt{ Green\+Ponik\+\_\+\+Water\+Pump\+\_\+\+Driver.\+py Library for Raspberry pi}}
 \item \href{\#table-of-contents}{\texttt{ Table of Contents}}
 \item \href{\#installation}{\texttt{ Installation}}
 \item \href{\#methods}{\texttt{ Methods}}
 \item \href{\#examples}{\texttt{ Examples}}
-\item \href{\#credits}{\texttt{ Credits}} $<$snippet$>$ $<$content$>$
+\item \href{\#credits}{\texttt{ Credits}}
 \end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md2}{}\doxysubsection{Installation}\label{md__r_e_a_d_m_e_autotoc_md2}
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{git clone https://github.com/GreenPonik/GreenPonik\_TSL2561.git}
-\DoxyCodeLine{cd GreenPonik\_TSL2561}
+\DoxyCodeLine{> git clone https://github.com/GreenPonik/GreenPonik\_WaterPump\_Driver.git}
+\DoxyCodeLine{cd GreenPonik\_WaterPump\_Driver}
 \DoxyCodeLine{pip3 install -\/r requirements.txt}
+\DoxyCodeLine{}
+\DoxyCodeLine{or }
+\DoxyCodeLine{}
+\DoxyCodeLine{> pip3 install greenponik-\/waterpump-\/driver}
 \end{DoxyCode}
 
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{from GreenPonik\_TSL2561 import read\_tsl2561}
+\DoxyCodeLine{from GreenPonik\_WaterPump\_Driver import i2c\_scanner, read\_byte\_data}
 \end{DoxyCode}
 \hypertarget{md__r_e_a_d_m_e_autotoc_md3}{}\doxysubsection{Methods}\label{md__r_e_a_d_m_e_autotoc_md3}
 
 \begin{DoxyCode}{0}
+\DoxyCodeLine{def i2c\_scanner():}
 \DoxyCodeLine{"""}
-\DoxyCodeLine{Get light data}
+\DoxyCodeLine{@brief i2c Scanner use to return the list of all addresses find on the i2c bus}
+\DoxyCodeLine{@return list of addresses}
 \DoxyCodeLine{"""}
-\DoxyCodeLine{def read\_tsl2561():}
+\DoxyCodeLine{}
+\DoxyCodeLine{def read\_byte\_data(addr, register):}
+\DoxyCodeLine{"""}
+\DoxyCodeLine{@brief read byte data from the device}
+\DoxyCodeLine{@param addr > byte i2c address of the device}
+\DoxyCodeLine{@param register > byte i2c register to read}
+\DoxyCodeLine{"""}
+\DoxyCodeLine{}
+\DoxyCodeLine{def write\_byte\_data(addr, register, value):}
+\DoxyCodeLine{"""}
+\DoxyCodeLine{@brief write byte data on the device}
+\DoxyCodeLine{@param addr > byte i2c address of the device}
+\DoxyCodeLine{@param register > byte i2c register to write}
+\DoxyCodeLine{"""}
+\DoxyCodeLine{}
+\DoxyCodeLine{def read\_block\_data(addr, register, size = 8):}
+\DoxyCodeLine{"""}
+\DoxyCodeLine{@brief read block byte data from the device}
+\DoxyCodeLine{@param addr > byte i2c address of the device}
+\DoxyCodeLine{@param register > byte i2c register to read}
+\DoxyCodeLine{@param size > byte size of block read from i2c bus}
+\DoxyCodeLine{"""}
+\DoxyCodeLine{}
+\DoxyCodeLine{def write\_block\_data(addr, register, data):}
+\DoxyCodeLine{"""}
+\DoxyCodeLine{@brief write block byte data on the device}
+\DoxyCodeLine{@param addr > byte i2c address of the device}
+\DoxyCodeLine{@param register > byte i2c register to write}
+\DoxyCodeLine{@param data > array of bytes to be send through i2c bus }
+\DoxyCodeLine{"""}
+\DoxyCodeLine{}
+\DoxyCodeLine{def pump\_run(addr, register, command):}
+\DoxyCodeLine{"""}
+\DoxyCodeLine{@brief command pump}
+\DoxyCodeLine{@param addr > byte i2c address of the pump}
+\DoxyCodeLine{@param register > byte i2c register of the pump}
+\DoxyCodeLine{@param command > byte order 0x00 = OFF / 0x01 = ON}
+\DoxyCodeLine{"""}
 \end{DoxyCode}
 \hypertarget{md__r_e_a_d_m_e_autotoc_md4}{}\doxysubsection{Example}\label{md__r_e_a_d_m_e_autotoc_md4}
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{import time}
-\DoxyCodeLine{from GreenPonik\_TSL2561 import read\_tsl2561}
+\DoxyCodeLine{from time import sleep}
+\DoxyCodeLine{from GreenPonik\_WaterPump\_Driver import i2c\_scanner, read\_byte\_data, read\_block\_data}
 \DoxyCodeLine{}
 \DoxyCodeLine{}
 \DoxyCodeLine{if \_\_name\_\_ == "\_\_main\_\_":}
-\DoxyCodeLine{    while True:}
-\DoxyCodeLine{        read\_tsl2561()}
-\DoxyCodeLine{        time.sleep(1)}
-\DoxyCodeLine{    pass}
+\DoxyCodeLine{    try:}
+\DoxyCodeLine{        while True:}
+\DoxyCodeLine{            i2c\_devices = i2c\_scanner()}
+\DoxyCodeLine{            for device in i2c\_devices:}
+\DoxyCodeLine{                if I2C\_DEVICES\_TYPE['WATERPUMP'] != read\_byte\_data(device, I2C\_REGISTERS['TYPE']:}
+\DoxyCodeLine{                    raise Exception("Current device is not a WaterPump")}
+\DoxyCodeLine{                else:}
+\DoxyCodeLine{                    UUID = read\_block\_data(device, I2C\_REGISTERS['UUID'])}
+\DoxyCodeLine{                    print("Device UUID: \%s" \% UUID)}
+\DoxyCodeLine{                sleep(0.5)}
+\DoxyCodeLine{            sleep(2)}
+\DoxyCodeLine{    except Exception as e:}
+\DoxyCodeLine{        print("Exception occured", e)}
 \end{DoxyCode}
 \hypertarget{md__r_e_a_d_m_e_autotoc_md5}{}\doxysubsection{Credits}\label{md__r_e_a_d_m_e_autotoc_md5}
 Write by Mickael Lehoux, from \href{https://www.greenponik.com}{\texttt{ Green\+Ponik}}, 2019 

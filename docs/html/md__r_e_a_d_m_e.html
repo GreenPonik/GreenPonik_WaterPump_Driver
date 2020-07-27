@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.18"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>My Project: README</title>
+<title>GreenPonik WaterPump Driver: README</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">My Project
+   <div id="projectname">GreenPonik WaterPump Driver
    </div>
   </td>
  </tr>
@@ -65,42 +65,98 @@ $(function() {
 <div class="title">README </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h2><a class="anchor" id="autotoc_md0"></a>
-## GreenPonik_TSL2561.py Library for Raspberry pi</h2>
-<p>This is the sample code for read light with TSL2561 sensor.</p>
+<div class="textblock"><p><a href="https://sonarcloud.io/dashboard?id=GreenPonik_GreenPonik_WaterPump_Driver"><img src="https://sonarcloud.io/api/project_badges/measure?project=GreenPonik_GreenPonik_WaterPump_Driver&amp;metric=alert_status" alt="Quality Gate Status" class="inline"/></a> <a href="https://sonarcloud.io/dashboard?id=GreenPonik_GreenPonik_WaterPump_Driver"><img src="https://sonarcloud.io/api/project_badges/measure?project=GreenPonik_GreenPonik_WaterPump_Driver&amp;metric=sqale_rating" alt="Maintainability Rating" class="inline"/></a></p>
+<p><a href="https://sonarcloud.io/dashboard?id=GreenPonik_GreenPonik_WaterPump_Driver"><img src="https://sonarcloud.io/api/project_badges/measure?project=GreenPonik_GreenPonik_WaterPump_Driver&amp;metric=ncloc" alt="Lines of Code" class="inline"/></a> <a href="https://sonarcloud.io/dashboard?id=GreenPonik_GreenPonik_WaterPump_Driver"><img src="https://sonarcloud.io/api/project_badges/measure?project=GreenPonik_GreenPonik_WaterPump_Driver&amp;metric=duplicated_lines_density" alt="Duplicated Lines (%)" class="inline"/></a></p>
+<p><a href="https://sonarcloud.io/dashboard?id=GreenPonik_GreenPonik_WaterPump_Driver"><img src="https://sonarcloud.io/api/project_badges/measure?project=GreenPonik_GreenPonik_WaterPump_Driver&amp;metric=reliability_rating" alt="Reliability Rating" class="inline"/></a> <a href="https://sonarcloud.io/dashboard?id=GreenPonik_GreenPonik_WaterPump_Driver"><img src="https://sonarcloud.io/api/project_badges/measure?project=GreenPonik_GreenPonik_WaterPump_Driver&amp;metric=security_rating" alt="Security Rating" class="inline"/></a> <a href="https://sonarcloud.io/dashboard?id=GreenPonik_GreenPonik_WaterPump_Driver"><img src="https://sonarcloud.io/api/project_badges/measure?project=GreenPonik_GreenPonik_WaterPump_Driver&amp;metric=vulnerabilities" alt="Vulnerabilities" class="inline"/></a></p>
+<p><img src="https://github.com/GreenPonik/GreenPonik_WaterPump_Driver/workflows/Upload%20Python%20Package/badge.svg?event=release" alt="Upload Python Package" style="pointer-events: none;" class="inline"/></p>
+<h2><a class="anchor" id="autotoc_md0"></a>
+## GreenPonik_WaterPump_Driver.py Library for Raspberry pi</h2>
+<p>This is the python side driver to manage GreenPonik WaterPump devices</p>
 <h2><a class="anchor" id="autotoc_md1"></a>
 Table of Contents</h2>
 <ul>
-<li><a href="#GreenPoniktsl2561py-library-for-raspberry-pi">GreenPonik_TSL2561.py Library for Raspberry pi</a></li>
+<li><a href="#GreenPonikWaterPumpDriverpy-library-for-raspberry-pi">GreenPonik_WaterPump_Driver.py Library for Raspberry pi</a></li>
 <li><a href="#table-of-contents">Table of Contents</a></li>
 <li><a href="#installation">Installation</a></li>
 <li><a href="#methods">Methods</a></li>
 <li><a href="#examples">Examples</a></li>
-<li><a href="#credits">Credits</a> &lt;snippet&gt; &lt;content&gt;</li>
+<li><a href="#credits">Credits</a></li>
 </ul>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Installation</h2>
-<div class="fragment"><div class="line">git clone https://github.com/GreenPonik/GreenPonik_TSL2561.git</div>
-<div class="line">cd GreenPonik_TSL2561</div>
+<div class="fragment"><div class="line">&gt; git clone https://github.com/GreenPonik/GreenPonik_WaterPump_Driver.git</div>
+<div class="line">cd GreenPonik_WaterPump_Driver</div>
 <div class="line">pip3 install -r requirements.txt</div>
-</div><!-- fragment --><div class="fragment"><div class="line">from GreenPonik_TSL2561 import read_tsl2561</div>
+<div class="line"> </div>
+<div class="line">or </div>
+<div class="line"> </div>
+<div class="line">&gt; pip3 install greenponik-waterpump-driver</div>
+</div><!-- fragment --><div class="fragment"><div class="line">from GreenPonik_WaterPump_Driver import i2c_scanner, read_byte_data</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md3"></a>
 Methods</h2>
-<div class="fragment"><div class="line">&quot;&quot;&quot;</div>
-<div class="line">Get light data</div>
+<div class="fragment"><div class="line">def i2c_scanner():</div>
 <div class="line">&quot;&quot;&quot;</div>
-<div class="line">def read_tsl2561():</div>
+<div class="line">@brief i2c Scanner use to return the list of all addresses find on the i2c bus</div>
+<div class="line">@return list of addresses</div>
+<div class="line">&quot;&quot;&quot;</div>
+<div class="line"> </div>
+<div class="line">def read_byte_data(addr, register):</div>
+<div class="line">&quot;&quot;&quot;</div>
+<div class="line">@brief read byte data from the device</div>
+<div class="line">@param addr &gt; byte i2c address of the device</div>
+<div class="line">@param register &gt; byte i2c register to read</div>
+<div class="line">&quot;&quot;&quot;</div>
+<div class="line"> </div>
+<div class="line">def write_byte_data(addr, register, value):</div>
+<div class="line">&quot;&quot;&quot;</div>
+<div class="line">@brief write byte data on the device</div>
+<div class="line">@param addr &gt; byte i2c address of the device</div>
+<div class="line">@param register &gt; byte i2c register to write</div>
+<div class="line">&quot;&quot;&quot;</div>
+<div class="line"> </div>
+<div class="line">def read_block_data(addr, register, size = 8):</div>
+<div class="line">&quot;&quot;&quot;</div>
+<div class="line">@brief read block byte data from the device</div>
+<div class="line">@param addr &gt; byte i2c address of the device</div>
+<div class="line">@param register &gt; byte i2c register to read</div>
+<div class="line">@param size &gt; byte size of block read from i2c bus</div>
+<div class="line">&quot;&quot;&quot;</div>
+<div class="line"> </div>
+<div class="line">def write_block_data(addr, register, data):</div>
+<div class="line">&quot;&quot;&quot;</div>
+<div class="line">@brief write block byte data on the device</div>
+<div class="line">@param addr &gt; byte i2c address of the device</div>
+<div class="line">@param register &gt; byte i2c register to write</div>
+<div class="line">@param data &gt; array of bytes to be send through i2c bus </div>
+<div class="line">&quot;&quot;&quot;</div>
+<div class="line"> </div>
+<div class="line">def pump_run(addr, register, command):</div>
+<div class="line">&quot;&quot;&quot;</div>
+<div class="line">@brief command pump</div>
+<div class="line">@param addr &gt; byte i2c address of the pump</div>
+<div class="line">@param register &gt; byte i2c register of the pump</div>
+<div class="line">@param command &gt; byte order 0x00 = OFF / 0x01 = ON</div>
+<div class="line">&quot;&quot;&quot;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md4"></a>
 Example</h2>
-<div class="fragment"><div class="line">import time</div>
-<div class="line">from GreenPonik_TSL2561 import read_tsl2561</div>
+<div class="fragment"><div class="line">from time import sleep</div>
+<div class="line">from GreenPonik_WaterPump_Driver import i2c_scanner, read_byte_data, read_block_data</div>
 <div class="line"> </div>
 <div class="line"> </div>
 <div class="line">if __name__ == &quot;__main__&quot;:</div>
-<div class="line">    while True:</div>
-<div class="line">        read_tsl2561()</div>
-<div class="line">        time.sleep(1)</div>
-<div class="line">    pass</div>
+<div class="line">    try:</div>
+<div class="line">        while True:</div>
+<div class="line">            i2c_devices = i2c_scanner()</div>
+<div class="line">            for device in i2c_devices:</div>
+<div class="line">                if I2C_DEVICES_TYPE[&#39;WATERPUMP&#39;] != read_byte_data(device, I2C_REGISTERS[&#39;TYPE&#39;]:</div>
+<div class="line">                    raise Exception(&quot;Current device is not a WaterPump&quot;)</div>
+<div class="line">                else:</div>
+<div class="line">                    UUID = read_block_data(device, I2C_REGISTERS[&#39;UUID&#39;])</div>
+<div class="line">                    print(&quot;Device UUID: %s&quot; % UUID)</div>
+<div class="line">                sleep(0.5)</div>
+<div class="line">            sleep(2)</div>
+<div class="line">    except Exception as e:</div>
+<div class="line">        print(&quot;Exception occured&quot;, e)</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md5"></a>
 Credits</h2>
 <p>Write by Mickael Lehoux, from <a href="https://www.greenponik.com">GreenPonik</a>, 2019 </p>
