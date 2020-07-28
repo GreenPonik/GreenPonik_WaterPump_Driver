@@ -19,7 +19,7 @@ class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
         self.assertTrue(self, len(devices) > 0)
         self.assertTrue(self, type(devices).__name__ == "list")
 
-    def test_is_water_pump(self):
+    def test_read_byte_data(self):
         for device in i2c_scanner():
             self.assertTrue(
                 self,
@@ -27,14 +27,16 @@ class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
                 == read_byte_data(device, I2C_REGISTER["TYPE"]),
             )
 
-    def test_have_uuid(self):
+    def test_read_block_data(self):
         # for device in i2c_scanner():
+
+        UUID = read_block_data(23, I2C_REGISTER["UUID"])
         self.assertTrue(
             self,
-            type(read_block_data(23, I2C_REGISTER["UUID"])).__name__
+            type(UUID).__name__
             == "list",
         )
-        self.assertTrue(self, len(read_block_data(23, I2C_REGISTER["UUID"])) == 0x16)
+        self.assertTrue(self, len(UUID) == 16)
 
 
 if __name__ == "__main__":
