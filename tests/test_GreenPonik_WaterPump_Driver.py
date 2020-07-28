@@ -12,7 +12,7 @@ class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
     def test_i2c_scanner(self):
         devices = i2c_scanner()
         self.assertTrue(self, len(devices) > 0)
-        self.assertTrue(self, type(devices).__name__, 'list')
+        self.assertTrue(self, type(devices).__name__ == 'list')
         
 
     def test_is_water_pump(self):
