@@ -31,14 +31,16 @@ class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
 
     def test_read_block_data(self):
         for device in i2c_scanner():
-            UUID = read_block_data(device, I2C_REGISTER["UUID"])
-            self.assertTrue(
-                self,
-                type(UUID).__name__
-                == "list",
-            )
-            self.assertEqual(self, len(UUID), 8)
-            sleep(0.2)
+            if I2C_DEVICES_TYPE["WATERPUMP"] == read_byte_data(
+                device, I2C_REGISTER["TYPE"]
+            ):
+                UUID = read_block_data(device, I2C_REGISTER["UUID"])
+                print(UUID)
+                self.assertTrue(
+                    self, type(UUID).__name__ == "list",
+                )
+                self.assertEqual(self, len(UUID), 8)
+                sleep(0.2)
 
 
 if __name__ == "__main__":
