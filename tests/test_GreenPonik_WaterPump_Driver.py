@@ -19,6 +19,9 @@ class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
         for device in i2c_scanner():
             self.assertTrue(self, I2C_DEVICES_TYPE['WATERPUMP'] == read_byte_data(device, I2C_REGISTER['TYPE']))
 
+    def test_have_uuid(self):
+        for device in i2c_scanner():
+            self.assertTrue(self, type(read_block_data(device, I2C_REGISTER['UUID'])).__name__ == 'bytesarray' )
 
 if __name__ == "__main__":
     unittest.main()
