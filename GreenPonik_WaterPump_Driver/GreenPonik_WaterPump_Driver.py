@@ -53,9 +53,9 @@ def i2c_scanner():
         i2c = busio.i2c(board.SCL, board.SDA)
         # Give the I2C device time to settle
         sleep(2)
-        i2c_slaves = i2c.scan()
+        i2c_devices = i2c.scan()
         i2c.deinit()
-        return i2c_slaves
+        return i2c_devices
     except Exception as e:
         print("Exception occured", e)
 
