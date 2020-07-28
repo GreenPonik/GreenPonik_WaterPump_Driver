@@ -5,15 +5,17 @@
 import unittest
 
 
-from GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver import i2c_scanner, pump_run
+from GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver import I2C_REGISTER, I2C_DEVICES_TYPE, i2c_scanner, read_byte_data
 
 
 class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
     def test_i2c_scanner(self):
-        self.assertListEqual(self, i2c_scanner())
+        self.assertEqual(self, <type i2c_scanner()>, list())
+        self.assertTrue(self, len(i2c_scanner()) > 0)
 
-    def test_pump_run(self):
-        self.assertListEqual(self, pump_run())
+    def test_is_water_pump(self):
+        for device in i2c_scanner():
+            self.assertTrue(self, I2C_DEVICES_TYPE['WATERPUMP'] == read_byte_data(device, I2C_REGISTER['TYPE'])
 
 
 if __name__ == "__main__":
