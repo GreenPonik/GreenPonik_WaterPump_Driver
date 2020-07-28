@@ -4,7 +4,6 @@
 
 import unittest
 
-
 from GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver import (
     I2C_REGISTER,
     I2C_DEVICES_TYPE,
@@ -35,6 +34,7 @@ class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
                 type(read_block_data(device, I2C_REGISTER["UUID"])).__name__
                 == "bytesarray",
             )
+            self.assertTrue(self, len(read_block_data(device, I2C_REGISTER["UUID"])) == 0x08)
 
 
 if __name__ == "__main__":
