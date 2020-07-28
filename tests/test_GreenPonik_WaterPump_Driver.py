@@ -11,6 +11,9 @@ from GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver import (
     i2c_scanner,
     read_byte_data,
     read_block_data,
+    pump_run,
+    ON,
+    OFF,
 )
 
 
@@ -41,7 +44,17 @@ class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
                     self, type(UUID).__name__ == "list",
                 )
                 self.assertTrue(self, len(UUID) == 8)
-                sleep(0.2)
+            sleep(0.2)
+
+    def test_pump_run(self):
+        for device in i2c_scanner():
+            if I2C_DEVICES_TYPE["WATERPUMP"] == read_byte_data(
+                device, I2C_REGISTER["TYPE"]
+            ):
+                pump_run(device, I2C_REGISTER["PUMP_1_STATE"], ON)
+                sleep(10)
+                pump_run(device, I2C_REGISTER["PUMP_1_STATE"], OFF)
+            sleep(0.2)
 
 
 if __name__ == "__main__":
