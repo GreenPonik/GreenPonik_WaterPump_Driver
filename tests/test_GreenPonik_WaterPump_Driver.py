@@ -36,10 +36,11 @@ class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
             ):
                 UUID = read_block_data(device, I2C_REGISTER["UUID"])
                 print(UUID)
+                print(len(UUID))
                 self.assertTrue(
                     self, type(UUID).__name__ == "list",
                 )
-                self.assertEqual(self, len(UUID), 8)
+                self.assertTrue(self, len(UUID) == 8)
                 sleep(0.2)
 
 
