@@ -52,8 +52,10 @@ class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
                 device, I2C_REGISTER["TYPE"]
             ):
                 pump_run(device, I2C_REGISTER["PUMP_1_STATE"], ON)
+                self.assertTrue(self, read_byte_data(device, I2C_REGISTER['PUMP_1_STATE']) == ON)
                 sleep(10)
                 pump_run(device, I2C_REGISTER["PUMP_1_STATE"], OFF)
+                self.assertTrue(self, read_byte_data(device, I2C_REGISTER['PUMP_1_STATE']) == OFF)
             sleep(0.2)
 
 
