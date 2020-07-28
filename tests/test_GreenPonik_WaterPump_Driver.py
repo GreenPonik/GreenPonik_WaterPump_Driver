@@ -29,7 +29,7 @@ class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
 
     def test_read_block_data(self):
         # for device in i2c_scanner():
-        UUID = read_block_data(23, I2C_REGISTER["UUID"])
+        UUID = read_block_data(35, I2C_REGISTER["UUID"])
         print(UUID)
         self.assertTrue(
             self,
