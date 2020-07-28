@@ -12,7 +12,6 @@
 
 from time import sleep
 from smbus2 import SMBus
-
 import board
 import busio
 
@@ -129,7 +128,8 @@ def pump_run(self, addr, register, command):
     try:
         device = self.read_byte_data(addr, I2C_REGISTER["TYPE"])
         if I2C_DEVICES_TYPE["WATERPUMP"] != device:
-            raise Exception("Current device type %x indicate it's not a pump" % device)
+            excepMsg = "Current device type %x is not a pump" % device
+            raise Exception(excepMsg)
         else:
             self.write_byte_data(addr, register, command)
     except Exception as e:

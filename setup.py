@@ -10,7 +10,7 @@ long_description = (here / 'README.md').read_text(encoding='utf-8')
 
 def load_version():
     version_file = os.path.join(os.path.dirname(
-        __file__), "src/", "version.py")
+        __file__), "GreenPonik_WaterPump_Driver", "version.py")
     version = {}
     with open(version_file) as fd:
         exec(fd.read(), version)
@@ -27,14 +27,16 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/GreenPonik/GreenPonik_WaterPump_Driver",
     license="MIT",
-    install_requires=["board", "busio", "smbus2"],
+    install_requires=["adafruit-blinka", "smbus2"],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    packages=find_packages(where='src'),  # Required
-    package_dir={'': 'src'},  # Optional
+    # packages=find_packages(where='src'),  # Required where='src/GreenPonik_WaterPump_Driver'
+    packages=find_packages(),
+    # packages=['GreenPonik_WaterPump_Driver'],
+    # package_dir={'': 'src'},  # Optional
     python_requires='>=3.6',
     project_urls={  # Optional
         'Source': 'https://github.com/GreenPonik/GreenPonik_WaterPump_Driver/',
