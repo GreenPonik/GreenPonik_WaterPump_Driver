@@ -50,7 +50,7 @@ def i2c_scanner():
     """
     try:
         # instanciate i2c bus on the second raspberry bus
-        i2c = busio.i2c(board.SCL, board.SDA)
+        i2c = busio.I2C(board.SCL, board.SDA)
         # Give the I2C device time to settle
         sleep(2)
         i2c_devices = i2c.scan()
