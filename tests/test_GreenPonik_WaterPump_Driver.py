@@ -32,7 +32,7 @@ class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
         self.assertTrue(
             self,
             type(read_block_data(23, I2C_REGISTER["UUID"])).__name__
-            == "bytesarray",
+            == "list",
         )
         self.assertTrue(self, len(read_block_data(23, I2C_REGISTER["UUID"])) == 0x16)
 
