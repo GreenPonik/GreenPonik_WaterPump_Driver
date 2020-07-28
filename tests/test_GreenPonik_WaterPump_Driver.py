@@ -28,13 +28,13 @@ class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
             )
 
     def test_have_uuid(self):
-        for device in i2c_scanner():
-            self.assertTrue(
-                self,
-                type(read_block_data(device, I2C_REGISTER["UUID"])).__name__
-                == "bytesarray",
-            )
-            self.assertTrue(self, len(read_block_data(device, I2C_REGISTER["UUID"])) == 0x16)
+        # for device in i2c_scanner():
+        self.assertTrue(
+            self,
+            type(read_block_data(23, I2C_REGISTER["UUID"])).__name__
+            == "bytesarray",
+        )
+        self.assertTrue(self, len(read_block_data(23, I2C_REGISTER["UUID"])) == 0x16)
 
 
 if __name__ == "__main__":
