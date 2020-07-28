@@ -3,6 +3,7 @@
 # setup.py that excludes installing the "tests" package
 
 import unittest
+from time import sleep
 
 from GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver import (
     I2C_REGISTER,
@@ -26,17 +27,18 @@ class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
                 I2C_DEVICES_TYPE["WATERPUMP"]
                 == read_byte_data(device, I2C_REGISTER["TYPE"]),
             )
+            sleep(0.2)
 
     def test_read_block_data(self):
-        # for device in i2c_scanner():
-        UUID = read_block_data(35, I2C_REGISTER["UUID"])
-        print(UUID)
-        self.assertTrue(
-            self,
-            type(UUID).__name__
-            == "list",
-        )
-        self.assertEqual(self, len(UUID), 16)
+        for device in i2c_scanner():
+            UUID = read_block_data(device, I2C_REGISTER["UUID"])
+            self.assertTrue(
+                self,
+                type(UUID).__name__
+                == "list",
+            )
+            self.assertEqual(self, len(UUID), 8)
+            sleep(0.2)
 
 
 if __name__ == "__main__":
