@@ -41,7 +41,7 @@ ON = 0x01
 OFF = 0x00
 
 
-def i2c_scanner(self):
+def i2c_scanner():
     """
     @brief i2c Scanner use to return
     the list of all addresses
@@ -60,7 +60,7 @@ def i2c_scanner(self):
         print("Exception occured", e)
 
 
-def read_byte_data(self, addr, register):
+def read_byte_data(addr, register):
     """
     @brief read byte data from the device
     @param addr > byte i2c address of the device
@@ -75,7 +75,7 @@ def read_byte_data(self, addr, register):
         print("Exception occured", e)
 
 
-def write_byte_data(self, addr, register, value):
+def write_byte_data(addr, register, value):
     """
     @brief write byte data on the device
     @param addr > byte i2c address of the device
@@ -88,7 +88,7 @@ def write_byte_data(self, addr, register, value):
         print("Exception occured", e)
 
 
-def read_block_data(self, addr, register, size=8):
+def read_block_data(addr, register, size=8):
     """
     @brief read block byte data from the device
     @param addr > byte i2c address of the device
@@ -104,7 +104,7 @@ def read_block_data(self, addr, register, size=8):
         print("Exception occured", e)
 
 
-def write_block_data(self, addr, register, data):
+def write_block_data(addr, register, data):
     """
     @brief write block byte data on the device
     @param addr > byte i2c address of the device
@@ -118,7 +118,7 @@ def write_block_data(self, addr, register, data):
         print("Exception occured", e)
 
 
-def pump_run(self, addr, register, command):
+def pump_run(addr, register, command):
     """
     @brief command pump
     @param addr > byte i2c address of the pump
@@ -126,11 +126,11 @@ def pump_run(self, addr, register, command):
     @param command > byte order 0x00 = OFF / 0x01 = ON
     """
     try:
-        device = self.read_byte_data(addr, I2C_REGISTER["TYPE"])
+        device = read_byte_data(addr, I2C_REGISTER["TYPE"])
         if I2C_DEVICES_TYPE["WATERPUMP"] != device:
             excepMsg = "Current device type %x is not a pump" % device
             raise Exception(excepMsg)
         else:
-            self.write_byte_data(addr, register, command)
+            write_byte_data(addr, register, command)
     except Exception as e:
         print("Exception occured", e)
