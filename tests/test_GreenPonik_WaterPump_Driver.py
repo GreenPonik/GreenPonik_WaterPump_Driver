@@ -7,9 +7,9 @@ import unittest
 import sys
 import fake_rpi
 
-sys.modules['RPi'] = fake_rpi.RPi     # Fake RPi
-sys.modules['RPi.GPIO'] = fake_rpi.RPi.GPIO # Fake GPIO
-sys.modules['smbus2'] = fake_rpi.smbus # Fake smbus (I2C)
+sys.modules["RPi"] = fake_rpi.RPi  # Fake RPi
+sys.modules["RPi.GPIO"] = fake_rpi.RPi.GPIO  # Fake GPIO
+sys.modules["smbus2"] = fake_rpi.smbus  # Fake smbus (I2C)
 # from unittest.mock import patch, MagicMock
 
 # MockRPi = MagicMock()
@@ -38,8 +38,8 @@ from GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver import (
     OFF,
 )
 
-class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
 
+class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
     def test_i2c_scanner(self):
         devices = i2c_scanner()
         self.assertTrue(self, len(devices) > 0)
@@ -74,10 +74,14 @@ class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
                 device, I2C_REGISTER["TYPE"]
             ):
                 pump_run(device, I2C_REGISTER["PUMP_1_STATE"], ON)
-                self.assertTrue(self, read_byte_data(device, I2C_REGISTER['PUMP_1_STATE']) == ON)
+                self.assertTrue(
+                    self, read_byte_data(device, I2C_REGISTER["PUMP_1_STATE"]) == ON
+                )
                 sleep(10)
                 pump_run(device, I2C_REGISTER["PUMP_1_STATE"], OFF)
-                self.assertTrue(self, read_byte_data(device, I2C_REGISTER['PUMP_1_STATE']) == OFF)
+                self.assertTrue(
+                    self, read_byte_data(device, I2C_REGISTER["PUMP_1_STATE"]) == OFF
+                )
             sleep(0.2)
 
 
