@@ -43,5 +43,5 @@ setup(
         'Bug Reports': 'https://github.com/GreenPonik/GreenPonik_WaterPump_Driver/issues',
     },
     keywords="GreenPonik hydroponics WaterPump i2c driver python hardware diy iot",
-    py_modules=["GreenPonik_WaterPump_Driver"],
+    # py_modules=["GreenPonik_WaterPump_Driver"],
 )
