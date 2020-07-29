@@ -29,7 +29,7 @@ import unittest
 #     patcher.stop()
 
 from GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver import (
-    I2C_REGISTER,
+    I2C_REGISTERS,
     I2C_DEVICES_TYPE,
     i2c_scanner,
     read_byte_data,
@@ -51,16 +51,16 @@ class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
             self.assertTrue(
                 self,
                 I2C_DEVICES_TYPE["WATERPUMP"]
-                == read_byte_data(device, I2C_REGISTER["TYPE"]),
+                == read_byte_data(device, I2C_REGISTERS["TYPE"]),
             )
             sleep(0.2)
 
     def test_read_block_data(self):
         for device in i2c_scanner():
             if I2C_DEVICES_TYPE["WATERPUMP"] == read_byte_data(
-                device, I2C_REGISTER["TYPE"]
+                device, I2C_REGISTERS["TYPE"]
             ):
-                UUID = read_block_data(device, I2C_REGISTER["UUID"])
+                UUID = read_block_data(device, I2C_REGISTERS["UUID"])
                 print(UUID)
                 print(len(UUID))
                 self.assertTrue(
@@ -72,16 +72,16 @@ class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
     def test_pump_run(self):
         for device in i2c_scanner():
             if I2C_DEVICES_TYPE["WATERPUMP"] == read_byte_data(
-                device, I2C_REGISTER["TYPE"]
+                device, I2C_REGISTERS["TYPE"]
             ):
-                pump_run(device, I2C_REGISTER["PUMP_1_STATE"], ON)
+                pump_run(device, I2C_REGISTERS["PUMP_1_STATE"], ON)
                 self.assertTrue(
-                    self, read_byte_data(device, I2C_REGISTER["PUMP_1_STATE"]) == ON
+                    self, read_byte_data(device, I2C_REGISTERS["PUMP_1_STATE"]) == ON
                 )
                 sleep(10)
-                pump_run(device, I2C_REGISTER["PUMP_1_STATE"], OFF)
+                pump_run(device, I2C_REGISTERS["PUMP_1_STATE"], OFF)
                 self.assertTrue(
-                    self, read_byte_data(device, I2C_REGISTER["PUMP_1_STATE"]) == OFF
+                    self, read_byte_data(device, I2C_REGISTERS["PUMP_1_STATE"]) == OFF
                 )
             sleep(0.2)
 

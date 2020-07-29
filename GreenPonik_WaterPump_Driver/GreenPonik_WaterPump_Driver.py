@@ -16,7 +16,7 @@ import board
 import busio
 
 
-I2C_REGISTER = {
+I2C_REGISTERS = {
     "TYPE": 0x00,  # i2c Read Only
     "FIRMWARE": 0x01,  # i2c Read Only
     "UUID": 0x02,  # i2c Read Only
@@ -128,7 +128,7 @@ def pump_run(addr, register, command):
     @param command > byte order 0x00 = OFF / 0x01 = ON
     """
     try:
-        device = read_byte_data(addr, I2C_REGISTER["TYPE"])
+        device = read_byte_data(addr, I2C_REGISTERS["TYPE"])
         if I2C_DEVICES_TYPE["WATERPUMP"] != device:
             excepMsg = "Current device type %x is not a pump" % device
             raise Exception(excepMsg)
