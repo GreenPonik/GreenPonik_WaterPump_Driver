@@ -2,8 +2,30 @@
 # testing in general, but rather to support the `find_packages` example in
 # setup.py that excludes installing the "tests" package
 
-import unittest
 from time import sleep
+import unittest
+import sys
+import fake_rpi
+
+sys.modules['RPi'] = fake_rpi.RPi     # Fake RPi
+sys.modules['RPi.GPIO'] = fake_rpi.RPi.GPIO # Fake GPIO
+sys.modules['smbus2'] = fake_rpi.smbus # Fake smbus (I2C)
+# from unittest.mock import patch, MagicMock
+
+# MockRPi = MagicMock()
+# modules = {
+#     "RPi": MockRPi,
+#     "RPi.GPIO": MockRPi.GPIO,
+#     "smbus2": MockRPi.smbus2,
+#     "fcntl": MockRPi.fcntl,
+# }
+
+# def setUp():
+#     patcher = patch.dict("sys.modules", modules)
+#     patcher.start()
+
+# def teardownModules():
+#     patcher.stop()
 
 from GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver import (
     I2C_REGISTER,
@@ -16,8 +38,8 @@ from GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver import (
     OFF,
 )
 
-
 class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
+
     def test_i2c_scanner(self):
         devices = i2c_scanner()
         self.assertTrue(self, len(devices) > 0)
