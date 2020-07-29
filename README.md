@@ -15,6 +15,7 @@
 ---------------------------------------------------------
 This is the python side driver to manage GreenPonik WaterPump devices
 
+## ! Only tested on Raspberry Pi 3 A+ !<br>
 
 ## Table of Contents
 
@@ -38,7 +39,7 @@ or
 ```
 ```Python
 
-from GreenPonik_WaterPump_Driver import i2c_scanner, read_byte_data
+import GreenPonik_WaterPump_Driver
 
 ```
 
