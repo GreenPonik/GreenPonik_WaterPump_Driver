@@ -11,7 +11,6 @@
 """
 
 from time import sleep
-from smbus2 import SMBus
 import board
 import busio
 
@@ -60,7 +59,7 @@ def i2c_scanner():
         print("Exception occured", e)
 
 
-def read_byte_data(addr, register):
+def read_byte_data(addr, register, buffer):
     """
     @brief read byte data from the device
     @param addr > byte i2c address of the device
@@ -68,54 +67,26 @@ def read_byte_data(addr, register):
     @return byte
     """
     try:
-        with SMBus(1) as bus:
-            byteData = bus.read_byte_data(addr, register)
-            sleep(0.450)
-            return byteData
+        i2c = busio.I2C(board.SCL, board.SDA)
+        byteData = i2c.readfrom_into(addr, buffer, register)
+        sleep(0.450)
+        i2c.deinit()
+        return byteData
     except Exception as e:
         print("Exception occured", e)
 
 
-def write_byte_data(addr, register, value):
+def write_byte_data(addr, register, buffer):
     """
     @brief write byte data on the device
     @param addr > byte i2c address of the device
     @param register > byte i2c register to write
     """
     try:
-        with SMBus(1) as bus:
-            bus.write_byte_data(addr, register, value)
-    except Exception as e:
-        print("Exception occured", e)
-
-
-def read_block_data(addr, register, size=8):
-    """
-    @brief read block byte data from the device
-    @param addr > byte i2c address of the device
-    @param register > byte i2c register to read
-    @param size > byte size of block read from i2c bus
-    @return list
-    """
-    try:
-        with SMBus(1) as bus:
-            data = bus.read_i2c_block_data(addr, register, size)
-            sleep(0.450)
-            return data
-    except Exception as e:
-        print("Exception occured", e)
-
-
-def write_block_data(addr, register, data):
-    """
-    @brief write block byte data on the device
-    @param addr > byte i2c address of the device
-    @param register > byte i2c register to write
-    @param data > array of bytes to be send through i2c bus
-    """
-    try:
-        with SMBus(1) as bus:
-            bus.write_i2c_block_data(addr, register, data)
+        i2c = busio.I2C(board.SCL, board.SDA)
+        i2c.writeto(addr, buffer, register)
+        sleep(0.450)
+        i2c.deinit()
     except Exception as e:
         print("Exception occured", e)
 
@@ -128,7 +99,8 @@ def pump_run(addr, register, command):
     @param command > byte order 0x00 = OFF / 0x01 = ON
     """
     try:
-        device = read_byte_data(addr, I2C_REGISTERS["TYPE"])
+        b = bytearray(1)
+        device = read_byte_data(addr, I2C_REGISTERS["TYPE"], b)
         if I2C_DEVICES_TYPE["WATERPUMP"] != device:
             excepMsg = "Current device type %x is not a pump" % device
             raise Exception(excepMsg)
