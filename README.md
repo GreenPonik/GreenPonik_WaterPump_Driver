@@ -10,6 +10,7 @@
 
 
 ![Upload Python Package](https://github.com/GreenPonik/GreenPonik_WaterPump_Driver/workflows/Upload%20Python%20Package/badge.svg?event=release)
+<!-- [![Documentation](https://github.com/GreenPonik/GreenPonik_WaterPump_Driver/blob/master/assets/doxygen_badge.svg)](https://github.com/GreenPonik/GreenPonik_WaterPump_Driver/html/index.html) -->
 
 ## GreenPonik_WaterPump_Driver.py Library for Raspberry pi
 ---------------------------------------------------------
