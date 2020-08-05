@@ -100,9 +100,10 @@ def pump_run(addr, register, command):
     """
     try:
         b = bytearray(1)
-        device = read_byte_data(addr, I2C_REGISTERS["TYPE"], b)
-        if I2C_DEVICES_TYPE["WATERPUMP"] != device:
-            excepMsg = "Current device type %x is not a pump" % device
+        deviceType = read_byte_data(addr, I2C_REGISTERS["TYPE"], b)
+        print(deviceType)
+        if I2C_DEVICES_TYPE["WATERPUMP"] != hex(deviceType):
+            excepMsg = "Current device type %x is not a pump" % deviceType
             raise Exception(excepMsg)
         else:
             write_byte_data(addr, register, command)

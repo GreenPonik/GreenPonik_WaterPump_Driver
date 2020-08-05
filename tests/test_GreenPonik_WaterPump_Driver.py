@@ -5,21 +5,7 @@
 from time import sleep
 import unittest
 from unittest.mock import patch, MagicMock
-
-# MockRPi = MagicMock()
-# modules = {
-#     "board": MockRPi.board,
-#     "busio": MockRPi.busio,
-# }
-# patcher = patch.dict("sys.modules", modules)
-
-
-# def setUp():
-#     patcher.start()
-
-
-# def teardownModules():
-#     patcher.stop()
+import sys
 
 
 class BoardMock:
@@ -34,88 +20,79 @@ class BoardMock:
         return self._sda
 
 
-class BusioMock:
-    def i2c(self, sda, scl):
+class BusioMock(MagicMock()):
+    def I2C(self, sda, scl):
         return True
 
 
-class I2CMock:
-    board = BoardMock()
-    busio = BusioMock()
-
-    def i2c_scanner(self):
-        i2c = busio.i2c(board.SDA(), board.SCL())
-        return [100]
-
-
-modules = {
-    "board": BoardMock(),
-    "busio": BusioMock(),
-}
-patcher = patch.dict("sys.modules", modules)
+sys.modules["board"] = BoardMock()
+sys.modules["busio"] = BusioMock()
 
 
 from GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver import (
-    #     I2C_REGISTERS,
-    #     I2C_DEVICES_TYPE,
+    I2C_REGISTERS,
+    I2C_DEVICES_TYPE,
     i2c_scanner,
-    #     read_byte_data,
-    #     read_block_data,
-    #     pump_run,
-    #     ON,
-    #     OFF,
+    read_byte_data,
+    pump_run,
+    ON,
+    OFF,
 )
 
 
 class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
     @patch("GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver.i2c_scanner")
-    def test_i2c_scanner(self, mock_scan):
-        expected_result = [100]
-        mock_scan.return_value = expected_result
-
-        devices = i2c_scanner()
-
+    def test_i2c_scanner(self, MockScan):
+        scan = MockScan()
+        expected = [i for i in range(20, 101)]
+        scan.return_value = expected
+        devices = scan()
+        self.assertIsNotNone(self, devices)
         self.assertTrue(self, len(devices) > 0)
         self.assertTrue(self, type(devices).__name__ == "list")
 
-    # def test_read_byte_data(self):
-    #     for device in i2c_scanner():
-    #         self.assertTrue(
-    #             self,
-    #             I2C_DEVICES_TYPE["WATERPUMP"]
-    #             == read_byte_data(device, I2C_REGISTERS["TYPE"]),
-    #         )
-    #         sleep(0.2)
+    @patch("GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver.read_byte_data")
+    def test_read_byte_data(self, MockRead):
+        read = MockRead()
+        read.return_value = I2C_DEVICES_TYPE["WATERPUMP"]
+        devices = i2c_scanner()
+        self.assertIsNotNone(self, devices)
+        deviceType = read(devices[0], I2C_REGISTERS["TYPE"])
+        self.assertIsNotNone(self, deviceType)
+        self.assertTrue(self, type(deviceType).__name__ == "int")
+        self.assertTrue(self, deviceType == I2C_DEVICES_TYPE["WATERPUMP"])
 
-    # def test_read_block_data(self):
-    #     for device in i2c_scanner():
-    #         if I2C_DEVICES_TYPE["WATERPUMP"] == read_byte_data(
-    #             device, I2C_REGISTERS["TYPE"]
-    #         ):
-    #             UUID = read_block_data(device, I2C_REGISTERS["UUID"])
-    #             print(UUID)
-    #             print(len(UUID))
-    #             self.assertTrue(
-    #                 self, type(UUID).__name__ == "list",
-    #             )
-    #             self.assertTrue(self, len(UUID) == 8)
-    #         sleep(0.2)
+    @patch("GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver.read_byte_data")
+    def test_read_block_data(self, MockRead):
+        read = MockRead()
+        read.return_value = [55, 89, 63, 35, 54, 21, 25, 47]
+        devices = i2c_scanner()
+        self.assertIsNotNone(self, devices)
+        b = bytearray(8)
+        UUID = (read(devices[0], I2C_REGISTERS["UUID"], b),)
+        self.assertIsNotNone(self, UUID)
+        self.assertTrue(
+            self, type(UUID).__name__ == "list",
+        )
+        self.assertTrue(self, len(UUID) == 8)
 
-    # def test_pump_run(self):
-    #     for device in i2c_scanner():
-    #         if I2C_DEVICES_TYPE["WATERPUMP"] == read_byte_data(
-    #             device, I2C_REGISTERS["TYPE"]
-    #         ):
-    #             pump_run(device, I2C_REGISTERS["PUMP_1_STATE"], ON)
-    #             self.assertTrue(
-    #                 self, read_byte_data(device, I2C_REGISTERS["PUMP_1_STATE"]) == ON
-    #             )
-    #             sleep(10)
-    #             pump_run(device, I2C_REGISTERS["PUMP_1_STATE"], OFF)
-    #             self.assertTrue(
-    #                 self, read_byte_data(device, I2C_REGISTERS["PUMP_1_STATE"]) == OFF
-    #             )
-    #         sleep(0.2)
+    @patch("GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver.read_byte_data")
+    @patch("GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver.pump_run")
+    def test_pump_run(self, MockRead, MockRun):
+        read = MockRead()
+        read.return_value = I2C_DEVICES_TYPE["WATERPUMP"]
+        r = MockRun()
+        devices = i2c_scanner()
+        self.assertIsNotNone(self, devices)
+        r(devices[0], I2C_REGISTERS["PUMP_1_STATE"], ON)
+        b = bytearray(1)
+        self.assertTrue(
+            self, read_byte_data(devices[0], I2C_REGISTERS["PUMP_1_STATE"], b) == ON
+        )
+        r(devices[0], I2C_REGISTERS["PUMP_1_STATE"], OFF)
+        self.assertTrue(
+            self, read_byte_data(devices[0], I2C_REGISTERS["PUMP_1_STATE"], b) == OFF
+        )
 
 
 if __name__ == "__main__":
