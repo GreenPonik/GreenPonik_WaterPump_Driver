@@ -59,7 +59,7 @@ def i2c_scanner():
         print("Exception occured", e)
 
 
-def read_byte_data(addr, register, buffer):
+def read_byte_data(addr, register, buffer=bytearray(1)):
     """
     @brief read byte data from the device
     @param addr > byte i2c address of the device
@@ -76,7 +76,7 @@ def read_byte_data(addr, register, buffer):
         print("Exception occured", e)
 
 
-def write_byte_data(addr, register, buffer):
+def write_byte_data(addr, register, buffer=bytearray(1)):
     """
     @brief write byte data on the device
     @param addr > byte i2c address of the device
