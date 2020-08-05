@@ -5,12 +5,13 @@ import pathlib
 here = pathlib.Path(__file__).parent.resolve()
 
 # Get the long description from the README file
-long_description = (here / 'README.md').read_text(encoding='utf-8')
+long_description = (here / "README.md").read_text(encoding="utf-8")
 
 
 def load_version():
-    version_file = os.path.join(os.path.dirname(
-        __file__), "GreenPonik_WaterPump_Driver", "version.py")
+    version_file = os.path.join(
+        os.path.dirname(__file__), "GreenPonik_WaterPump_Driver", "version.py"
+    )
     version = {}
     with open(version_file) as fd:
         exec(fd.read(), version)
@@ -34,10 +35,10 @@ setup(
         "Operating System :: OS Independent",
     ],
     packages=find_packages(),
-    python_requires='>=3.6',
+    python_requires=">=3.6",
     project_urls={  # Optional
-        'Source': 'https://github.com/GreenPonik/GreenPonik_WaterPump_Driver/',
-        'Bug Reports': 'https://github.com/GreenPonik/GreenPonik_WaterPump_Driver/issues',
+        "Source": "https://github.com/GreenPonik/GreenPonik_WaterPump_Driver/",
+        "Bug Reports": "https://github.com/GreenPonik/GreenPonik_WaterPump_Driver/issues",
     },
     keywords="GreenPonik hydroponics WaterPump i2c driver python hardware diy iot",
     # py_modules=["GreenPonik_WaterPump_Driver"],
