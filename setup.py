@@ -27,7 +27,7 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/GreenPonik/GreenPonik_WaterPump_Driver",
     license="MIT",
-    install_requires=["adafruit-blinka", "smbus2"],
+    install_requires=["adafruit-blinka"],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",

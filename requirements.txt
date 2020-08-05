@@ -6,4 +6,3 @@
 
 
 adafruit-blinka>=5.2.3
-smbus2>=0.3.0
