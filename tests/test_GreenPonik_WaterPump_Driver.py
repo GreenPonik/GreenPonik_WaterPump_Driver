@@ -2,7 +2,6 @@
 # testing in general, but rather to support the `find_packages` example in
 # setup.py that excludes installing the "tests" package
 
-from time import sleep
 import unittest
 from unittest.mock import patch, MagicMock
 import sys
