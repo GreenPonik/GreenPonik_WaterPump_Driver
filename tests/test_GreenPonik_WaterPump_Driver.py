@@ -7,7 +7,9 @@ from unittest.mock import patch, MagicMock
 import sys
 import os
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+# sys.path.insert(0, os.path.abspath(
+#     os.path.join(os.path.dirname(__file__), "..")))
+
 
 class BoardMock:
     def __init__(self):
@@ -42,7 +44,9 @@ from GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver import (
 
 
 class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
-    @patch("GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver.i2c_scanner")
+    @patch(
+        "GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver.i2c_scanner"
+    )
     def test_i2c_scanner(self, MockScan):
         scan = MockScan()
         expected = [i for i in range(20, 101)]
@@ -52,7 +56,9 @@ class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
         self.assertTrue(self, len(devices) > 0)
         self.assertTrue(self, type(devices).__name__ == "list")
 
-    @patch("GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver.read_byte_data")
+    @patch(
+        "GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver.read_byte_data"
+    )
     def test_read_byte_data(self, MockRead):
         read = MockRead()
         read.return_value = I2C_DEVICES_TYPE["WATERPUMP"]
@@ -63,7 +69,9 @@ class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
         self.assertTrue(self, type(deviceType).__name__ == "int")
         self.assertTrue(self, deviceType == I2C_DEVICES_TYPE["WATERPUMP"])
 
-    @patch("GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver.read_byte_data")
+    @patch(
+        "GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver.read_byte_data"
+    )
     def test_read_block_data(self, MockRead):
         read = MockRead()
         read.return_value = [55, 89, 63, 35, 54, 21, 25, 47]
@@ -85,12 +93,12 @@ class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
         r = MockRun()
         devices = i2c_scanner()
         self.assertIsNotNone(self, devices)
-        r(devices[0], I2C_REGISTERS["PUMP_1_STATE"], ON)
+        r.pump_run(devices[0], I2C_REGISTERS["PUMP_1_STATE"], ON)
         b = bytearray(1)
         self.assertTrue(
             self, read_byte_data(devices[0], I2C_REGISTERS["PUMP_1_STATE"], b) == ON
         )
-        r(devices[0], I2C_REGISTERS["PUMP_1_STATE"], OFF)
+        r.pump_run(devices[0], I2C_REGISTERS["PUMP_1_STATE"], OFF)
         self.assertTrue(
             self, read_byte_data(devices[0], I2C_REGISTERS["PUMP_1_STATE"], b) == OFF
         )

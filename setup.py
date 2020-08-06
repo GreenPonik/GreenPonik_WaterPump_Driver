@@ -1,12 +1,12 @@
-port io
+import io
 import os
 import sys
 from shutil import rmtree
 
 from setuptools import find_packages, setup, Command
 
-from setuptools import setup, find_packages
-import os
+# from setuptools import setup, find_packages
+# import os
 import pathlib
 
 # Package meta-data.
@@ -65,7 +65,7 @@ setup(
     long_description_content_type="text/markdown",
     url=URL,
     license="MIT",
-    install_requires=REQUIRED[
+    install_requires=REQUIRED,
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
