@@ -32,7 +32,7 @@ sys.modules["board"] = BoardMock()
 sys.modules["busio"] = BusioMock()
 
 
-from ..GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver import (
+from GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver import (
     I2C_REGISTERS,
     I2C_DEVICES_TYPE,
     i2c_scanner,
