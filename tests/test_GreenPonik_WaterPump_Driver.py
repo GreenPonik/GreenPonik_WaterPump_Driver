@@ -32,7 +32,7 @@ sys.modules["board"] = BoardMock()
 sys.modules["busio"] = BusioMock()
 
 
-from GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver import (
+from GreenPonik_WaterPump_Driver import (
     I2C_REGISTERS,
     I2C_DEVICES_TYPE,
     i2c_scanner,
@@ -45,7 +45,7 @@ from GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver import (
 
 class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
     @patch(
-        "GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver.i2c_scanner"
+        "GreenPonik_WaterPump_Driver.i2c_scanner"
     )
     def test_i2c_scanner(self, MockScan):
         scan = MockScan()
@@ -57,7 +57,7 @@ class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
         self.assertTrue(self, type(devices).__name__ == "list")
 
     @patch(
-        "GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver.read_byte_data"
+        "GreenPonik_WaterPump_Driver.read_byte_data"
     )
     def test_read_byte_data(self, MockRead):
         read = MockRead()
@@ -70,7 +70,7 @@ class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
         self.assertTrue(self, deviceType == I2C_DEVICES_TYPE["WATERPUMP"])
 
     @patch(
-        "GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver.read_byte_data"
+        "GreenPonik_WaterPump_Driver.read_byte_data"
     )
     def test_read_block_data(self, MockRead):
         read = MockRead()
@@ -85,8 +85,8 @@ class TestGreenPonik_WaterPump_Driver(unittest.TestCase):
         )
         self.assertTrue(self, len(UUID) == 8)
 
-    @patch("GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver.read_byte_data")
-    @patch("GreenPonik_WaterPump_Driver.GreenPonik_WaterPump_Driver.pump_run")
+    @patch("GreenPonik_WaterPump_Driver.read_byte_data")
+    @patch("GreenPonik_WaterPump_Driver.pump_run")
     def test_pump_run(self, MockRead, MockRun):
         read = MockRead()
         read.return_value = I2C_DEVICES_TYPE["WATERPUMP"]

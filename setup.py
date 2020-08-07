@@ -1,4 +1,4 @@
-import io
+# import io
 import os
 import sys
 from shutil import rmtree
@@ -37,7 +37,7 @@ long_description = (here / "README.md").read_text(encoding="utf-8")
 
 def load_version():
     version_file = os.path.join(
-        os.path.dirname(__file__), "GreenPonik_WaterPump_Driver/", "version.py"
+        os.path.dirname(__file__), "", "version.py"
     )
     version = {}
     with open(version_file) as fd:
@@ -49,7 +49,7 @@ def load_version():
 about = {}
 if not VERSION:
     project_slug = NAME.lower().replace("-", "_").replace(" ", "_")
-    with open(os.path.join(here, project_slug, "version.py")) as f:
+    with open(os.path.join(here, "version.py")) as f:
         exec(f.read(), about)
 else:
     about["__version__"] = VERSION
