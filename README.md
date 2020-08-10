@@ -83,24 +83,37 @@ def pump_run(addr, register, command):
 ## Example
 ```Python
 from time import sleep
-from GreenPonik_WaterPump_Driver import i2c_scanner, read_byte_data, read_block_data
+from GreenPonik_WaterPump_Driver import WaterPumpDriver
 
 
 if __name__ == "__main__":
+    driver = WaterPumpDriver()
     try:
-        while True:
-            i2c_devices = i2c_scanner()
-            for device in i2c_devices:
-                if I2C_DEVICES_TYPE['WATERPUMP'] != read_byte_data(device, I2C_REGISTERS['TYPE']:
-                    raise Exception("Current device is not a WaterPump")
-                else:
-                    UUID = read_block_data(device, I2C_REGISTERS['UUID'])
-                    print("Device UUID: %s" % UUID)
-                sleep(0.5)
-            sleep(2)
+        i2c_devices = driver.i2c_scanner()
+        for device in i2c_devices:
+            if driver.I2C_DEVICES_TYPE["WATERPUMP"] != driver.read_byte_data(
+                device, driver.I2C_REGISTERS["TYPE"]
+            ):
+                raise Exception("Device isn't a waterpump")
+            else:
+                UUID = driver.read_byte_data(device, driver.I2C_REGISTERS["UUID"])
+                print("Device UUID: %s" % UUID)
+                driver.pump_run(
+                    device,
+                    driver.I2C_REGISTERS["PUMP_1_STATE"],
+                    driver.I2C_COMMANDS["ON"],
+                )
+                sleep(2)
+                driver.pump_run(
+                    device,
+                    driver.I2C_REGISTERS["PUMP_1_STATE"],
+                    driver.I2C_COMMANDS["OFF"],
+                )
+            sleep(0.5)
     except Exception as e:
         print("Exception occured", e)
 ```
+go to [examples](examples/waterpump_driver.py)
 
 ## Credits
 Write by Mickael Lehoux, from [GreenPonik](https://www.greenponik.com), 2019
