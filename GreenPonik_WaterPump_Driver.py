@@ -21,6 +21,7 @@ class WaterPumpDriver:
     I2C Registers
     Array key=>value for each i2c register you can read
     """
+
     I2C_REGISTERS = {
         "TYPE": 0x00,  # i2c Read Only
         "FIRMWARE": 0x01,  # i2c Read Only
@@ -52,7 +53,6 @@ class WaterPumpDriver:
     """
     I2C_COMMANDS = {"ON": 0x01, "OFF": 0x00}
 
-
     def i2c_scanner(self):
         """
         @brief i2c Scanner use to return
@@ -71,7 +71,6 @@ class WaterPumpDriver:
         except Exception as e:
             print("Exception occured", e)
 
-
     def read_byte_data(self, addr, register, buffer=bytearray(1)):
         """
         @brief read byte data from the device
@@ -89,7 +88,6 @@ class WaterPumpDriver:
         except Exception as e:
             print("Exception occured", e)
 
-
     def write_byte_data(self, addr, register, buffer=bytearray(1)):
         """
         @brief write byte data on the device
@@ -105,7 +103,6 @@ class WaterPumpDriver:
         except Exception as e:
             print("Exception occured", e)
 
-
     def pump_run(self, addr, register, command):
         """
         @brief command pump
@@ -115,12 +112,16 @@ class WaterPumpDriver:
         """
         try:
             b = bytearray(1)
-            deviceType = read_byte_data(addr, I2C_REGISTERS["TYPE"], b)
+            deviceType = self.read_byte_data(
+                addr,
+                self.I2C_REGISTERS["TYPE"],
+                b
+            )
             print(deviceType)
-            if I2C_DEVICES_TYPE["WATERPUMP"] != hex(deviceType):
+            if self.I2C_DEVICES_TYPE["WATERPUMP"] != hex(deviceType):
                 excepMsg = "Current device type %x is not a pump" % deviceType
                 raise Exception(excepMsg)
             else:
-                write_byte_data(addr, register, command)
+                self.write_byte_data(addr, register, command)
         except Exception as e:
             print("Exception occured", e)
