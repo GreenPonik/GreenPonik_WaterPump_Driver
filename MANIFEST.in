@@ -23,6 +23,3 @@ recursive-include data *
 recursive-include example *.py
 recursive-include src *.py
 
-# added by check_manifest.py
-include tox.ini
-recursive-include tests *.py
