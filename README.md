@@ -40,7 +40,7 @@ or
 ```
 ```Python
 
-import GreenPonik_WaterPump_Driver
+from GreenPonik_WaterPump_Driver import WaterPumpDriver
 
 ```
 
