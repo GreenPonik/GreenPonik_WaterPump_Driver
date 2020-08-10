@@ -5,7 +5,8 @@
 \href{https://sonarcloud.io/dashboard?id=GreenPonik_GreenPonik_WaterPump_Driver}{\texttt{ }} \href{https://sonarcloud.io/dashboard?id=GreenPonik_GreenPonik_WaterPump_Driver}{\texttt{ }} \href{https://sonarcloud.io/dashboard?id=GreenPonik_GreenPonik_WaterPump_Driver}{\texttt{ }}
 
 \hypertarget{md__r_e_a_d_m_e_autotoc_md0}{}\doxysubsection{\#\# Green\+Ponik\+\_\+\+Water\+Pump\+\_\+\+Driver.\+py Library for Raspberry pi}\label{md__r_e_a_d_m_e_autotoc_md0}
-This is the python side driver to manage Green\+Ponik Water\+Pump devices\hypertarget{md__r_e_a_d_m_e_autotoc_md1}{}\doxysubsection{Table of Contents}\label{md__r_e_a_d_m_e_autotoc_md1}
+This is the python side driver to manage Green\+Ponik Water\+Pump devices\hypertarget{md__r_e_a_d_m_e_autotoc_md1}{}\doxysubsection{! Only tested on Raspberry Pi 3 A+ !$<$br$>$}\label{md__r_e_a_d_m_e_autotoc_md1}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md2}{}\doxysubsection{Table of Contents}\label{md__r_e_a_d_m_e_autotoc_md2}
 
 \begin{DoxyItemize}
 \item \href{\#GreenPonikWaterPumpDriverpy-library-for-raspberry-pi}{\texttt{ Green\+Ponik\+\_\+\+Water\+Pump\+\_\+\+Driver.\+py Library for Raspberry pi}}
@@ -14,7 +15,7 @@ This is the python side driver to manage Green\+Ponik Water\+Pump devices\hypert
 \item \href{\#methods}{\texttt{ Methods}}
 \item \href{\#examples}{\texttt{ Examples}}
 \item \href{\#credits}{\texttt{ Credits}}
-\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md2}{}\doxysubsection{Installation}\label{md__r_e_a_d_m_e_autotoc_md2}
+\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md3}{}\doxysubsection{Installation}\label{md__r_e_a_d_m_e_autotoc_md3}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{> git clone https://github.com/GreenPonik/GreenPonik\_WaterPump\_Driver.git}
@@ -29,9 +30,9 @@ This is the python side driver to manage Green\+Ponik Water\+Pump devices\hypert
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{from GreenPonik\_WaterPump\_Driver import i2c\_scanner, read\_byte\_data}
+\DoxyCodeLine{import GreenPonik\_WaterPump\_Driver}
 \end{DoxyCode}
-\hypertarget{md__r_e_a_d_m_e_autotoc_md3}{}\doxysubsection{Methods}\label{md__r_e_a_d_m_e_autotoc_md3}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md4}{}\doxysubsection{Methods}\label{md__r_e_a_d_m_e_autotoc_md4}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{def i2c\_scanner():}
@@ -40,34 +41,21 @@ This is the python side driver to manage Green\+Ponik Water\+Pump devices\hypert
 \DoxyCodeLine{@return list of addresses}
 \DoxyCodeLine{"""}
 \DoxyCodeLine{}
-\DoxyCodeLine{def read\_byte\_data(addr, register):}
+\DoxyCodeLine{def read\_byte\_data(addr, register, buffer=bytearray(1)):}
 \DoxyCodeLine{"""}
 \DoxyCodeLine{@brief read byte data from the device}
 \DoxyCodeLine{@param addr > byte i2c address of the device}
 \DoxyCodeLine{@param register > byte i2c register to read}
+\DoxyCodeLine{@param buffer > bytearray write bytes has bytearray is long}
+\DoxyCodeLine{@return byte}
 \DoxyCodeLine{"""}
 \DoxyCodeLine{}
-\DoxyCodeLine{def write\_byte\_data(addr, register, value):}
+\DoxyCodeLine{def write\_byte\_data(addr, register, buffer=bytearray(1)):}
 \DoxyCodeLine{"""}
 \DoxyCodeLine{@brief write byte data on the device}
 \DoxyCodeLine{@param addr > byte i2c address of the device}
 \DoxyCodeLine{@param register > byte i2c register to write}
-\DoxyCodeLine{"""}
-\DoxyCodeLine{}
-\DoxyCodeLine{def read\_block\_data(addr, register, size = 8):}
-\DoxyCodeLine{"""}
-\DoxyCodeLine{@brief read block byte data from the device}
-\DoxyCodeLine{@param addr > byte i2c address of the device}
-\DoxyCodeLine{@param register > byte i2c register to read}
-\DoxyCodeLine{@param size > byte size of block read from i2c bus}
-\DoxyCodeLine{"""}
-\DoxyCodeLine{}
-\DoxyCodeLine{def write\_block\_data(addr, register, data):}
-\DoxyCodeLine{"""}
-\DoxyCodeLine{@brief write block byte data on the device}
-\DoxyCodeLine{@param addr > byte i2c address of the device}
-\DoxyCodeLine{@param register > byte i2c register to write}
-\DoxyCodeLine{@param data > array of bytes to be send through i2c bus }
+\DoxyCodeLine{@param buffer > bytearray write bytes has bytearray is long}
 \DoxyCodeLine{"""}
 \DoxyCodeLine{}
 \DoxyCodeLine{def pump\_run(addr, register, command):}
@@ -78,7 +66,7 @@ This is the python side driver to manage Green\+Ponik Water\+Pump devices\hypert
 \DoxyCodeLine{@param command > byte order 0x00 = OFF / 0x01 = ON}
 \DoxyCodeLine{"""}
 \end{DoxyCode}
-\hypertarget{md__r_e_a_d_m_e_autotoc_md4}{}\doxysubsection{Example}\label{md__r_e_a_d_m_e_autotoc_md4}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md5}{}\doxysubsection{Example}\label{md__r_e_a_d_m_e_autotoc_md5}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{from time import sleep}
@@ -100,5 +88,5 @@ This is the python side driver to manage Green\+Ponik Water\+Pump devices\hypert
 \DoxyCodeLine{    except Exception as e:}
 \DoxyCodeLine{        print("Exception occured", e)}
 \end{DoxyCode}
-\hypertarget{md__r_e_a_d_m_e_autotoc_md5}{}\doxysubsection{Credits}\label{md__r_e_a_d_m_e_autotoc_md5}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md6}{}\doxysubsection{Credits}\label{md__r_e_a_d_m_e_autotoc_md6}
 Write by Mickael Lehoux, from \href{https://www.greenponik.com}{\texttt{ Green\+Ponik}}, 2019 

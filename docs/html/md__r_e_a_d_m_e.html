@@ -73,6 +73,8 @@ $(function() {
 ## GreenPonik_WaterPump_Driver.py Library for Raspberry pi</h2>
 <p>This is the python side driver to manage GreenPonik WaterPump devices</p>
 <h2><a class="anchor" id="autotoc_md1"></a>
+! Only tested on Raspberry Pi 3 A+ !&lt;br&gt;</h2>
+<h2><a class="anchor" id="autotoc_md2"></a>
 Table of Contents</h2>
 <ul>
 <li><a href="#GreenPonikWaterPumpDriverpy-library-for-raspberry-pi">GreenPonik_WaterPump_Driver.py Library for Raspberry pi</a></li>
@@ -82,7 +84,7 @@ Table of Contents</h2>
 <li><a href="#examples">Examples</a></li>
 <li><a href="#credits">Credits</a></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md2"></a>
+<h2><a class="anchor" id="autotoc_md3"></a>
 Installation</h2>
 <div class="fragment"><div class="line">&gt; git clone https://github.com/GreenPonik/GreenPonik_WaterPump_Driver.git</div>
 <div class="line">cd GreenPonik_WaterPump_Driver</div>
@@ -91,8 +93,8 @@ Installation</h2>
 <div class="line">or </div>
 <div class="line"> </div>
 <div class="line">&gt; pip3 install greenponik-waterpump-driver</div>
-</div><!-- fragment --><div class="fragment"><div class="line">from GreenPonik_WaterPump_Driver import i2c_scanner, read_byte_data</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md3"></a>
+</div><!-- fragment --><div class="fragment"><div class="line">import GreenPonik_WaterPump_Driver</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md4"></a>
 Methods</h2>
 <div class="fragment"><div class="line">def i2c_scanner():</div>
 <div class="line">&quot;&quot;&quot;</div>
@@ -100,34 +102,21 @@ Methods</h2>
 <div class="line">@return list of addresses</div>
 <div class="line">&quot;&quot;&quot;</div>
 <div class="line"> </div>
-<div class="line">def read_byte_data(addr, register):</div>
+<div class="line">def read_byte_data(addr, register, buffer=bytearray(1)):</div>
 <div class="line">&quot;&quot;&quot;</div>
 <div class="line">@brief read byte data from the device</div>
 <div class="line">@param addr &gt; byte i2c address of the device</div>
 <div class="line">@param register &gt; byte i2c register to read</div>
+<div class="line">@param buffer &gt; bytearray write bytes has bytearray is long</div>
+<div class="line">@return byte</div>
 <div class="line">&quot;&quot;&quot;</div>
 <div class="line"> </div>
-<div class="line">def write_byte_data(addr, register, value):</div>
+<div class="line">def write_byte_data(addr, register, buffer=bytearray(1)):</div>
 <div class="line">&quot;&quot;&quot;</div>
 <div class="line">@brief write byte data on the device</div>
 <div class="line">@param addr &gt; byte i2c address of the device</div>
 <div class="line">@param register &gt; byte i2c register to write</div>
-<div class="line">&quot;&quot;&quot;</div>
-<div class="line"> </div>
-<div class="line">def read_block_data(addr, register, size = 8):</div>
-<div class="line">&quot;&quot;&quot;</div>
-<div class="line">@brief read block byte data from the device</div>
-<div class="line">@param addr &gt; byte i2c address of the device</div>
-<div class="line">@param register &gt; byte i2c register to read</div>
-<div class="line">@param size &gt; byte size of block read from i2c bus</div>
-<div class="line">&quot;&quot;&quot;</div>
-<div class="line"> </div>
-<div class="line">def write_block_data(addr, register, data):</div>
-<div class="line">&quot;&quot;&quot;</div>
-<div class="line">@brief write block byte data on the device</div>
-<div class="line">@param addr &gt; byte i2c address of the device</div>
-<div class="line">@param register &gt; byte i2c register to write</div>
-<div class="line">@param data &gt; array of bytes to be send through i2c bus </div>
+<div class="line">@param buffer &gt; bytearray write bytes has bytearray is long</div>
 <div class="line">&quot;&quot;&quot;</div>
 <div class="line"> </div>
 <div class="line">def pump_run(addr, register, command):</div>
@@ -137,7 +126,7 @@ Methods</h2>
 <div class="line">@param register &gt; byte i2c register of the pump</div>
 <div class="line">@param command &gt; byte order 0x00 = OFF / 0x01 = ON</div>
 <div class="line">&quot;&quot;&quot;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md4"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md5"></a>
 Example</h2>
 <div class="fragment"><div class="line">from time import sleep</div>
 <div class="line">from GreenPonik_WaterPump_Driver import i2c_scanner, read_byte_data, read_block_data</div>
@@ -157,7 +146,7 @@ Example</h2>
 <div class="line">            sleep(2)</div>
 <div class="line">    except Exception as e:</div>
 <div class="line">        print(&quot;Exception occured&quot;, e)</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md5"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md6"></a>
 Credits</h2>
 <p>Write by Mickael Lehoux, from <a href="https://www.greenponik.com">GreenPonik</a>, 2019 </p>
 </div></div><!-- contents -->
