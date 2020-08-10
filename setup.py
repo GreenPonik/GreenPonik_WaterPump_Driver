@@ -6,8 +6,8 @@ from setuptools import setup, find_packages
 NAME = "greenponik-waterpump-driver"
 DESCRIPTION = "GreenPonik WaterPump i2c driver"
 URL = "https://github.com/GreenPonik/GreenPonik_WaterPump_Driver"
-EMAIL = "me@example.com"
-AUTHOR = "Awesome Soul"
+EMAIL = "contact@greenponik.com"
+AUTHOR = "GreenPonik SAS"
 REQUIRES_PYTHON = ">=3.6.0"
 VERSION = "0.0.3"
 
