@@ -53,36 +53,21 @@ def i2c_scanner():
 @return list of addresses
 """
 
-def read_byte_data(addr, register):
+def read_byte_data(addr, register, buffer=bytearray(1)):
 """
 @brief read byte data from the device
 @param addr > byte i2c address of the device
 @param register > byte i2c register to read
+@param buffer > bytearray write bytes has bytearray is long
 @return byte
 """
 
-def write_byte_data(addr, register, value):
+def write_byte_data(addr, register, buffer=bytearray(1)):
 """
 @brief write byte data on the device
 @param addr > byte i2c address of the device
 @param register > byte i2c register to write
-"""
-
-def read_block_data(addr, register, size = 8):
-"""
-@brief read block byte data from the device
-@param addr > byte i2c address of the device
-@param register > byte i2c register to read
-@param size > byte size of block read from i2c bus
-@return list
-"""
-
-def write_block_data(addr, register, data):
-"""
-@brief write block byte data on the device
-@param addr > byte i2c address of the device
-@param register > byte i2c register to write
-@param data > array of bytes to be send through i2c bus 
+@param buffer > bytearray write bytes has bytearray is long
 """
 
 def pump_run(addr, register, command):

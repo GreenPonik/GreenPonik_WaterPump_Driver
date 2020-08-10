@@ -64,6 +64,7 @@ def read_byte_data(addr, register, buffer=bytearray(1)):
     @brief read byte data from the device
     @param addr > byte i2c address of the device
     @param register > byte i2c register to read
+    @param buffer > bytearray read bytes has bytearray is long
     @return byte
     """
     try:
@@ -81,6 +82,7 @@ def write_byte_data(addr, register, buffer=bytearray(1)):
     @brief write byte data on the device
     @param addr > byte i2c address of the device
     @param register > byte i2c register to write
+    @param buffer > bytearray write bytes has bytearray is long
     """
     try:
         i2c = busio.I2C(board.SCL, board.SDA)
