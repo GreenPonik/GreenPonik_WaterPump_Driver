@@ -3,8 +3,8 @@ from GreenPonik_WaterPump_Driver import WaterPumpDriver
 
 
 if __name__ == "__main__":
-    driver = WaterPumpDriver()
     try:
+        driver = WaterPumpDriver()
         i2c_devices = driver.i2c_scanner()
         for device in i2c_devices:
             if driver.I2C_DEVICES_TYPE["WATERPUMP"] != driver.read_byte_data(

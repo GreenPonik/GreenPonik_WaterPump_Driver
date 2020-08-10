@@ -12,13 +12,12 @@
 ![Upload Python Package](https://github.com/GreenPonik/GreenPonik_WaterPump_Driver/workflows/Upload%20Python%20Package/badge.svg?event=release)
 <!-- [![Documentation](https://github.com/GreenPonik/GreenPonik_WaterPump_Driver/blob/master/assets/doxygen_badge.svg)](https://github.com/GreenPonik/GreenPonik_WaterPump_Driver/html/index.html) -->
 
-## GreenPonik_WaterPump_Driver.py Library for Raspberry pi
----------------------------------------------------------
-This is the python side driver to manage GreenPonik WaterPump devices
+# GreenPonik_WaterPump_Driver.py Library for Raspberry pi
+## A python3 class to manage GreenPonik WaterPump devices<br>
 
 ## ! Only tested on Raspberry Pi 3 A+ !<br>
 
-## Table of Contents
+# Table of Contents
 
 - [GreenPonik_WaterPump_Driver.py Library for Raspberry pi](#GreenPonikWaterPumpDriverpy-library-for-raspberry-pi)
 - [Table of Contents](#table-of-contents)
@@ -28,7 +27,7 @@ This is the python side driver to manage GreenPonik WaterPump devices
 - [Credits](#credits)
 
 
-## Installation
+# Installation
 ```shell
 > git clone https://github.com/GreenPonik/GreenPonik_WaterPump_Driver.git
 cd GreenPonik_WaterPump_Driver
@@ -116,4 +115,4 @@ if __name__ == "__main__":
 go to [examples](examples/waterpump_driver.py)
 
 ## Credits
-Write by Mickael Lehoux, from [GreenPonik](https://www.greenponik.com), 2019
+Write by Mickael Lehoux, from [GreenPonik](https://www.greenponik.com), 2020
