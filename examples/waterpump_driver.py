@@ -12,7 +12,8 @@ if __name__ == "__main__":
             ):
                 raise Exception("Device isn't a waterpump")
             else:
-                UUID = driver.read_byte_data(device, driver.I2C_REGISTERS["UUID"])
+                UUID = driver.read_byte_data(device,
+                                             driver.I2C_REGISTERS["UUID"])
                 print("Device UUID: %s" % UUID)
                 driver.pump_run(
                     device,

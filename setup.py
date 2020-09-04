@@ -56,7 +56,8 @@ setup(
     python_requires=REQUIRES_PYTHON,
     project_urls={  # Optional
         "Source": "https://github.com/GreenPonik/GreenPonik_WaterPump_Driver/",
-        "Bug Reports": "https://github.com/GreenPonik/GreenPonik_WaterPump_Driver/issues",
+        "Bug Reports": "https://github.com/GreenPonik/\
+        GreenPonik_WaterPump_Driver/issues",
     },
     keywords="GreenPonik hydroponics WaterPump i2c driver \
          python hardware diy iot",
