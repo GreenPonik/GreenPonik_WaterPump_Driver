@@ -16,7 +16,7 @@ import board
 import busio
 
 
-class WaterPump_Driver:
+class WaterPumpDriver:
     """@brief
     I2C Registers
     Array key=>value for each i2c register you can read
