@@ -14,7 +14,8 @@ VERSION = "0.0.3"
 # What packages are required for this module to be executed?
 REQUIRED = [
     # 'requests', 'maya', 'records',
-    'adafruit-blinka',
+    "adafruit-blinka",
+    "adafruit-extended-bus",
 ]
 
 # What packages are optional?
@@ -30,7 +31,6 @@ long_description = (here / "README.md").read_text(encoding="utf-8")
 # Load the package's version.py module as a dictionary.
 about = {}
 if not VERSION:
-    # project_slug = NAME.lower().replace("-", "_").replace(" ", "_")
     with open(os.path.join(here, "version.py")) as f:
         exec(f.read(), about)
 else:

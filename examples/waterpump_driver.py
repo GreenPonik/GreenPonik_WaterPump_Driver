@@ -1,5 +1,5 @@
 from time import sleep
-from GreenPonik_WaterPump_Driver import WaterPumpDriver
+from GreenPonik_WaterPump_Driver.WaterPumpDriver import WaterPumpDriver
 
 
 if __name__ == "__main__":
@@ -7,12 +7,12 @@ if __name__ == "__main__":
         driver = WaterPumpDriver()
         i2c_devices = driver.i2c_scanner()
         for device in i2c_devices:
-            if driver.I2C_DEVICES_TYPE["WATERPUMP"] != driver.read_byte_data(
+            if driver.I2C_DEVICES_TYPE != driver.read(
                 device, driver.I2C_REGISTERS["TYPE"]
             ):
                 raise Exception("Device isn't a waterpump")
             else:
-                UUID = driver.read_byte_data(device,
+                UUID = driver.read(device,
                                              driver.I2C_REGISTERS["UUID"])
                 print("Device UUID: %s" % UUID)
                 driver.pump_run(
