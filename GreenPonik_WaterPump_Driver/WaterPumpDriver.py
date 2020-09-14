@@ -72,22 +72,6 @@ class WaterPumpDriver:
     def debug(self, d):
         self._debug = d
 
-    def i2c_scanner(self):
-        """
-        @brief i2c Scanner use to return
-        the list of all addresses
-        find on the i2c bus
-        @return list of addresses
-        """
-        try:
-            i2c = I2C(self._bus)
-            sleep(1)
-            i2c_devices = i2c.scan()
-            i2c.deinit()
-            return i2c_devices
-        except Exception as e:
-            print("Exception occured", e)
-
     def read(self, register, num_of_bytes=1):
         """
         @brief read data from i2c bus
@@ -117,36 +101,42 @@ class WaterPumpDriver:
         @param register > int i2c register to read
         @param v > int/bytearray to write through i2c
         """
-        if (
-            "int" != type(v).__name__
-            and len(v) > 1
-            and ("bytearray" == type(v).__name__ or "bytes" == type(v).__name__)
-        ):
-            self._smbus.write_i2c_block_data(self._address, register, v)
-        elif "int" == type(v).__name__:
-            self._smbus.write_byte_data(self._address, register, v)
-        else:
-            raise IOError("cannot write this in smbus/i2c: ", v)
-        if self._debug:
-            print("Write %s on register: %s" % (v, hex(register)))
+        try:
+            if (
+                "int" != type(v).__name__
+                and len(v) > 1
+                and ("bytearray" == type(v).__name__ or "bytes" == type(v).__name__)
+            ):
+                self._smbus.write_i2c_block_data(self._address, register, v)
+            elif "int" == type(v).__name__:
+                self._smbus.write_byte_data(self._address, register, v)
+            else:
+                raise IOError("cannot write this in smbus/i2c: ", v)
+            if self._debug:
+                print("Write %s on register: %s" % (v, hex(register)))
+        except Exception as e:
+            print("Exception occured", e)
 
     def list_i2c_devices(self):
         """
         @brief save the current address so we can restore it after
         """
-        with I2C(self._bus_number) as i2c:
-            scan = i2c.scan()
-            if self._debug:
-                print("I2c devices found: ", scan)
-            return scan
+        try:
+            with I2C(self._bus_number) as i2c:
+                scan = i2c.scan()
+                if self._debug:
+                    print("I2c devices found: ", scan)
+                return scan
+        except Exception as e:
+            print("Exception occured", e)
 
     def print_all_registers_values(self):
-        if "EC" == self._module:
-            registers = self.OEM_EC_REGISTERS
-        elif "PH" == self._module:
-            registers = self.OEM_PH_REGISTERS
-        for reg in range(0, len(registers)):
-            print("Register: %s, Value: %s" % (hex(reg), self.read(reg)))
+        try:
+            registers = self.I2C_REGISTERS
+            for reg in range(0, len(registers)):
+                print("Register: %s, Value: %s" % (hex(reg), self.read(reg)))
+        except Exception as e:
+            print("Exception occured", e)
 
     def pump_run(self, register, command):
         """
@@ -155,11 +145,16 @@ class WaterPumpDriver:
         @param command > byte order 0x00 = OFF / 0x01 = ON
         """
         try:
-            deviceType = self._bus(self.I2C_REGISTERS["TYPE"])
-            print(deviceType)
-            if self.I2C_DEVICES_TYPE != deviceType:
+            deviceType = self._smbus.read(self.I2C_REGISTERS["TYPE"])
+            if deviceType != self.I2C_DEVICES_TYPE:
                 raise Exception("Current device type %x is not a pump" % deviceType)
             else:
                 self.write(register, command)
+            if self._debug:
+                print("Current device type is: %s" % deviceType)
+                print(
+                    "Current pump register: %s and command passed %s"
+                    % (register, command)
+                )
         except Exception as e:
             print("Exception occured", e)
