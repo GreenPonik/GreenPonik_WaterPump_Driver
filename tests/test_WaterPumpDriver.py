@@ -72,7 +72,7 @@ class TestWaterPumpDriver(unittest.TestCase):
     #     self.assertTrue(self, len(UUID) == 8)
 
     @patch("GreenPonik_WaterPump_Driver.WaterPumpDriver.WaterPumpDriver")
-    def test_pump_run(self, mock):
+    def test_on_off_pump(self, mock):
         d = mock()
         register = d.I2C_REGISTERS["PUMP_1_STATE"]
 
