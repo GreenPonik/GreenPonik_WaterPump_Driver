@@ -208,7 +208,7 @@ class WaterPumpDriver:
         except Exception as e:
             print("Exception occured during get address", e)
 
-    def get_LED_status(self):
+    def get_led_status(self):
         """
         @brief get the device leds status
         @return int 0=>LEDs OFF / 1=>LEDs ON
