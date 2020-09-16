@@ -22,7 +22,6 @@
 - [GreenPonik_WaterPump_Driver.py Library for Raspberry pi](#GreenPonikWaterPumpDriverpy-library-for-raspberry-pi)
 - [Table of Contents](#table-of-contents)
 - [Installation](#installation)
-- [Methods](#methods)
 - [Examples](#examples)
 - [Credits](#credits)
 
