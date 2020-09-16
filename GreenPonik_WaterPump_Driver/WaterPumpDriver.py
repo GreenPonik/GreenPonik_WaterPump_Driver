@@ -19,7 +19,7 @@ from adafruit_extended_bus import ExtendedI2C as I2C
 class WaterPumpDriver:
 
     DEFAULT_BUS = 1
-    DEFAULT_ADDR = 0x0A
+    DEFAULT_ADDR = 0x01
 
     """@brief
     I2C Registers
