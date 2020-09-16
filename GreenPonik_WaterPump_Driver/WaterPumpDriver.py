@@ -79,12 +79,12 @@ class WaterPumpDriver:
         @param num_of_byte > int number of bytes to read started from the register
         """
         try:
-            deviceType = self._smbus.read_byte_data(
+            device_type = self._smbus.read_byte_data(
                 self._address, self.I2C_REGISTERS["TYPE"]
             )
-            if deviceType != self.I2C_DEVICES_TYPE:
+            if device_type != self.I2C_DEVICES_TYPE:
                 raise Exception(
-                    "Current device type %x is not a water pump" % deviceType
+                    "Current device type %x is not a water pump" % device_type
                 )
             else:
                 if num_of_bytes > 1:
@@ -111,9 +111,9 @@ class WaterPumpDriver:
         @param v > int/bytearray to write through i2c
         """
         try:
-            deviceType = self._smbus.read(self.I2C_REGISTERS["TYPE"])
-            if deviceType != self.I2C_DEVICES_TYPE:
-                raise Exception("Current device type %x is not a water pump" % deviceType)
+            device_type = self._smbus.read(self.I2C_REGISTERS["TYPE"])
+            if device_type != self.I2C_DEVICES_TYPE:
+                raise Exception("Current device type %x is not a water pump" % device_type)
             else:
                 if (
                     "int" != type(v).__name__
@@ -141,7 +141,7 @@ class WaterPumpDriver:
                     print("I2c devices found: ", scan)
                 return scan
         except Exception as e:
-            print("Exception occured", e)
+            print("Exception occured during get i2c devices list", e)
 
     def print_all_registers_values(self):
         """
@@ -152,7 +152,7 @@ class WaterPumpDriver:
             for reg in range(0, len(registers)):
                 print("Register: %s, Value: %s" % (hex(reg), self.read(reg)))
         except Exception as e:
-            print("Exception occured", e)
+            print("Exception occured during print all registers values", e)
 
     # ----- getters ----- #
 
@@ -167,7 +167,7 @@ class WaterPumpDriver:
                 print("ask for type: %s" % t)
             return t
         except Exception as e:
-            print("Exception occured", e)
+            print("Exception occured during get type", e)
 
     def get_firmware(self):
         """
@@ -180,7 +180,7 @@ class WaterPumpDriver:
                 print("ask for firmware: %s" % firmware)
             return firmware
         except Exception as e:
-            print("Exception occured", e)
+            print("Exception occured during get firmware", e)
 
     def get_uuid(self):
         """
@@ -193,7 +193,7 @@ class WaterPumpDriver:
                 print("ask for uuid: %s" % uuid)
             return uuid
         except Exception as e:
-            print("Exception occured", e)
+            print("Exception occured during get uuid", e)
 
     def get_address(self):
         """
@@ -206,7 +206,7 @@ class WaterPumpDriver:
                 print("ask for add: %s" % add)
             return add
         except Exception as e:
-            print("Exception occured", e)
+            print("Exception occured during get address", e)
 
     def get_LED_status(self):
         """
@@ -219,21 +219,21 @@ class WaterPumpDriver:
                 print("ask for led status: %s" % led_status)
             return led_status
         except Exception as e:
-            print("Exception occured", e)
+            print("Exception occured during get LEDs status", e)
 
-    def get_pump_state(self, pump_register: int):
+    def get_pump_status(self, pump_register: int):
         """
         @brief get the pump status
         @param int pump register to ask
         @return int 0=>pump OFF / 1=>pump ON
         """
         try:
-            state = self.read(pump_register)
+            status = self.read(pump_register)
             if self._debug:
-                print("ask for pump: %s state: %s" % (pump_register, state))
-            return state
+                print("ask for pump: %s status: %s" % (pump_register, status))
+            return status
         except Exception as e:
-            print("Exception occured", e)
+            print("Exception occured during get pump status", e)
 
     # ----- setters ----- #
 
@@ -245,7 +245,7 @@ class WaterPumpDriver:
         try:
             self._smbus.write(self.I2C_REGISTERS["I2C_ADDRESS"], addr)
         except Exception as e:
-            print("Exception occured", e)
+            print("Exception occured during set i2c address", e)
 
     def set_led_status(self, status: int):
         """
@@ -255,7 +255,7 @@ class WaterPumpDriver:
         try:
             self._smbus.write(self.I2C_REGISTERS["LED_ACTIVATION"], status)
         except Exception as e:
-            print("Exception occured", e)
+            print("Exception occured during set LEDs status", e)
 
     def set_pump_command(self, pump_register: int, command: int):
         """
@@ -271,4 +271,4 @@ class WaterPumpDriver:
                     % (pump_register, command)
                 )
         except Exception as e:
-            print("Exception occured", e)
+            print("Exception occured during set pump command", e)
