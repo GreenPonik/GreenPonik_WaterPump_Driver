@@ -30,12 +30,12 @@ class WaterPumpDriver:
         "FIRMWARE": 0x01,  # i2c Read Only
         "UUID": 0x02,  # i2c Read Only
         "I2C_ADDRESS": 0x03,  # i2c Read / Write
-        "LED_ACTIVATION": 0x05,  # i2c Read / Write
-        "PUMP_1_STATE": 0x06,  # i2c Read / Write
-        "PUMP_2_STATE": 0x07,  # i2c Read / Write
-        "PUMP_3_STATE": 0x08,  # i2c Read / Write
-        "PUMP_4_STATE": 0x09,  # i2c Read / Write
-        "WATER_PUMP_STATE": 0x10,  # i2c Read / Write
+        "LED_ACTIVATION": 0x04,  # i2c Read / Write
+        "PUMP_1_STATE": 0x05,  # i2c Read / Write
+        "PUMP_2_STATE": 0x06,  # i2c Read / Write
+        "PUMP_3_STATE": 0x07,  # i2c Read / Write
+        "PUMP_4_STATE": 0x08,  # i2c Read / Write
+        "WATER_PUMP_STATE": 0x09,  # i2c Read / Write
     }
 
     """@brief
@@ -72,26 +72,35 @@ class WaterPumpDriver:
     def debug(self, d):
         self._debug = d
 
-    def read(self, register, num_of_bytes=1):
+    def read(self, register: int, num_of_bytes=1):
         """
         @brief read data from i2c bus
         @param register > int i2c register to read
         @param num_of_byte > int number of bytes to read started from the register
         """
         try:
-            if num_of_bytes > 1:
-                raw = self._smbus.read_i2c_block_data(
-                    self._address, register, num_of_bytes
+            deviceType = self._smbus.read_byte_data(
+                self._address, self.I2C_REGISTERS["TYPE"]
+            )
+            if deviceType != self.I2C_DEVICES_TYPE:
+                raise Exception(
+                    "Current device type %x is not a water pump" % deviceType
                 )
             else:
-                raw = self._smbus.read_byte_data(self._address, register)
+                if num_of_bytes > 1:
+                    raw = self._smbus.read_i2c_block_data(
+                        self._address, register, num_of_bytes
+                    )
+                else:
+                    raw = self._smbus.read_byte_data(self._address, register)
 
-            if self._debug:
-                print(
-                    "Read: %s registers start from: %s" % (num_of_bytes, hex(register))
-                )
-                print("Raw response from i2c: ", raw)
-            return raw
+                if self._debug:
+                    print(
+                        "Read: %s registers start from: %s"
+                        % (num_of_bytes, hex(register))
+                    )
+                    print("Raw response from i2c: ", raw)
+                return raw
         except Exception as e:
             print("Exception occured", e)
 
@@ -102,24 +111,28 @@ class WaterPumpDriver:
         @param v > int/bytearray to write through i2c
         """
         try:
-            if (
-                "int" != type(v).__name__
-                and len(v) > 1
-                and ("bytearray" == type(v).__name__ or "bytes" == type(v).__name__)
-            ):
-                self._smbus.write_i2c_block_data(self._address, register, v)
-            elif "int" == type(v).__name__:
-                self._smbus.write_byte_data(self._address, register, v)
+            deviceType = self._smbus.read(self.I2C_REGISTERS["TYPE"])
+            if deviceType != self.I2C_DEVICES_TYPE:
+                raise Exception("Current device type %x is not a water pump" % deviceType)
             else:
-                raise IOError("cannot write this in smbus/i2c: ", v)
-            if self._debug:
-                print("Write %s on register: %s" % (v, hex(register)))
+                if (
+                    "int" != type(v).__name__
+                    and len(v) > 1
+                    and ("bytearray" == type(v).__name__ or "bytes" == type(v).__name__)
+                ):
+                    self._smbus.write_i2c_block_data(self._address, register, v)
+                elif "int" == type(v).__name__:
+                    self._smbus.write_byte_data(self._address, register, v)
+                else:
+                    raise IOError("cannot write this in smbus/i2c: ", v)
+                if self._debug:
+                    print("Write %s on register: %s" % (v, hex(register)))
         except Exception as e:
             print("Exception occured", e)
 
     def list_i2c_devices(self):
         """
-        @brief save the current address so we can restore it after
+        @brief list all i2c device on the current bus
         """
         try:
             with I2C(self._bus_number) as i2c:
@@ -131,6 +144,9 @@ class WaterPumpDriver:
             print("Exception occured", e)
 
     def print_all_registers_values(self):
+        """
+        @brief print all i2c register value on the cli
+        """
         try:
             registers = self.I2C_REGISTERS
             for reg in range(0, len(registers)):
@@ -138,23 +154,121 @@ class WaterPumpDriver:
         except Exception as e:
             print("Exception occured", e)
 
-    def pump_run(self, register, command):
+    # ----- getters ----- #
+
+    def get_type(self):
         """
-        @brief command pump
-        @param register > byte i2c register of the pump
-        @param command > byte order 0x00 = OFF / 0x01 = ON
+        @brief get the device type
+        @return int 1=>water pump
         """
         try:
-            deviceType = self._smbus.read(self.I2C_REGISTERS["TYPE"])
-            if deviceType != self.I2C_DEVICES_TYPE:
-                raise Exception("Current device type %x is not a pump" % deviceType)
-            else:
-                self.write(register, command)
+            t = self.read(self.I2C_REGISTERS["TYPE"])
             if self._debug:
-                print("Current device type is: %s" % deviceType)
+                print("ask for type: %s" % t)
+            return t
+        except Exception as e:
+            print("Exception occured", e)
+
+    def get_firmware(self):
+        """
+        @brief get the device type
+        @return int 2=>firmware rev 2
+        """
+        try:
+            firmware = self.read(self.I2C_REGISTERS["FIRMWARE"])
+            if self._debug:
+                print("ask for firmware: %s" % firmware)
+            return firmware
+        except Exception as e:
+            print("Exception occured", e)
+
+    def get_uuid(self):
+        """
+        @brief get the device uuid
+        @return 8 bytes 5241224745987163 => device uuid
+        """
+        try:
+            uuid = self.read(self.I2C_REGISTERS["UUID"])
+            if self._debug:
+                print("ask for uuid: %s" % uuid)
+            return uuid
+        except Exception as e:
+            print("Exception occured", e)
+
+    def get_address(self):
+        """
+        @brief get the device i2c address
+        @return int 100=>address 100 = 0x64
+        """
+        try:
+            add = self.read(self.I2C_REGISTERS["I2C_ADDRESS"])
+            if self._debug:
+                print("ask for add: %s" % add)
+            return add
+        except Exception as e:
+            print("Exception occured", e)
+
+    def get_LED_status(self):
+        """
+        @brief get the device leds status
+        @return int 0=>LEDs OFF / 1=>LEDs ON
+        """
+        try:
+            led_status = self.read(self.I2C_REGISTERS["LED_ACTIVATION"])
+            if self._debug:
+                print("ask for led status: %s" % led_status)
+            return led_status
+        except Exception as e:
+            print("Exception occured", e)
+
+    def get_pump_state(self, pump_register: int):
+        """
+        @brief get the pump status
+        @param int pump register to ask
+        @return int 0=>pump OFF / 1=>pump ON
+        """
+        try:
+            state = self.read(pump_register)
+            if self._debug:
+                print("ask for pump: %s state: %s" % (pump_register, state))
+            return state
+        except Exception as e:
+            print("Exception occured", e)
+
+    # ----- setters ----- #
+
+    def set_i2c_address(self, addr: int):
+        """
+        @brief set water pump i2c address
+        @param int addr => new address
+        """
+        try:
+            self._smbus.write(self.I2C_REGISTERS["I2C_ADDRESS"], addr)
+        except Exception as e:
+            print("Exception occured", e)
+
+    def set_led_status(self, status: int):
+        """
+        @brief set water pump LEDs activation
+        @param int status => new status 0=>OFF / 1=>ON
+        """
+        try:
+            self._smbus.write(self.I2C_REGISTERS["LED_ACTIVATION"], status)
+        except Exception as e:
+            print("Exception occured", e)
+
+    def set_pump_command(self, pump_register: int, command: int):
+        """
+        @brief set command pump
+        @param int pump_register to set
+        @param int command 0=>pump OFF / 1=>pump ON
+        """
+        try:
+            self.write(pump_register, command)
+            if self._debug:
                 print(
-                    "Current pump register: %s and command passed %s"
-                    % (register, command)
+                    "Pump: %s, Command passed: %s"
+                    % (pump_register, command)
                 )
         except Exception as e:
             print("Exception occured", e)
