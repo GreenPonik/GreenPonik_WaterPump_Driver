@@ -8,7 +8,7 @@ from unittest.mock import patch
 
 
 class FcntlMock:
-    def ioctl():
+    def ioctl(self):
         # simulate ioctl for tests only
         pass
 
