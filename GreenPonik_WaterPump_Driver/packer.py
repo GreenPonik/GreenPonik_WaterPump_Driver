@@ -55,11 +55,11 @@ class Packer:
         the value returned by available() will be decremented.
         @return int -1 if no bytes to read / byte value
         """
-        value = -1
-        if not self._is_packet_open and self._index < self._total_length:
-            value = self._buffer[self._index]
-            self._index += 1
-        return value
+        # value = -1
+        # if not self._is_packet_open and self._index < self._total_length:
+        #     value = self._buffer[self._index]
+        #     self._index += 1
+        return self._buffer
 
     def write(self, data):
         if not self._is_packet_open or self._total_length >= (
@@ -76,7 +76,6 @@ class Packer:
             raise TypeError("cannot write this data type on i2c bus")
 
         self._index += 1
-        print(self._index)
         self._total_length = self._index
         return 1
 
