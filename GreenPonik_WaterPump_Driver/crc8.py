@@ -8,7 +8,7 @@ https://github.com/gutierrezps/ESP32_I2C_Slave/blob/master/src/WireCrc.h
 """
 
 
-class _Crc8:
+class Crc8:
     def __init__(self):
         self._seed = 0
         self._debug = False

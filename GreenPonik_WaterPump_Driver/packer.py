@@ -22,7 +22,7 @@ based on:
 https://github.com/gutierrezps/ESP32_I2C_Slave/blob/master/src/WirePacker.h
 https://github.com/gutierrezps/ESP32_I2C_Slave/blob/master/src/WirePacker.cpp
 """
-from crc8 import _Crc8
+from crc8 import Crc8
 
 
 class Packer:
@@ -31,7 +31,6 @@ class Packer:
     def __init__(self):
         self._frame_start = 0x02
         self._frame_end = 0x04
-        # uint8_t buffer_[PACKER_BUFFER_LENGTH]
         self._buffer = [0] * self.PACKER_BUFFER_LENGTH
         self._index = 0
         self._total_length = 0
@@ -97,9 +96,8 @@ class Packer:
         # ignore crc and end bytes
         payload_range = self._total_length - 2
 
-        # print(payload_range)
         # ignore start and length bytes [2:payload_range]
-        crc = _Crc8()
+        crc = Crc8()
         _crc8 = crc.calc(self._buffer[2:payload_range])
 
         self._buffer[self._index - 2] = _crc8
