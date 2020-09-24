@@ -14,6 +14,7 @@
 from time import sleep
 from Adafruit_PureIO.smbus import SMBus
 from adafruit_extended_bus import ExtendedI2C as I2C
+from .packer import Packer
 
 
 class WaterPumpDriver:

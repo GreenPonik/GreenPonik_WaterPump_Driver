@@ -22,7 +22,7 @@ based on:
 https://github.com/gutierrezps/ESP32_I2C_Slave/blob/master/src/WirePacker.h
 https://github.com/gutierrezps/ESP32_I2C_Slave/blob/master/src/WirePacker.cpp
 """
-from crc8 import Crc8
+from .crc8 import Crc8
 
 
 class Packer:
