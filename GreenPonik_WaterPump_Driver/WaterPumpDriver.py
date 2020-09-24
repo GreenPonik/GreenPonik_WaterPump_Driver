@@ -72,6 +72,18 @@ class WaterPumpDriver:
     def debug(self, d):
         self._debug = d
 
+    def __enter__(self):
+        """Context manager enter function."""
+        # Just return this object so it can be used in a with statement, like
+        # with WaterPumpDriver(bus=1, addr=100) as driver:
+        #     # do stuff!
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """Context manager exit function, ensures resources are cleaned up."""
+        self._smbus.close()
+        return False  # Don't suppress exceptions.
+
     def read(self, register: int, num_of_bytes=1):
         """
         @brief read data from i2c bus
@@ -113,7 +125,9 @@ class WaterPumpDriver:
         try:
             device_type = self._smbus.read(self.I2C_REGISTERS["TYPE"])
             if device_type != self.I2C_DEVICES_TYPE:
-                raise Exception("Current device type %x is not a water pump" % device_type)
+                raise Exception(
+                    "Current device type %x is not a water pump" % device_type
+                )
             else:
                 if (
                     "int" != type(v).__name__
@@ -266,9 +280,6 @@ class WaterPumpDriver:
         try:
             self.write(pump_register, command)
             if self._debug:
-                print(
-                    "Pump: %s, Command passed: %s"
-                    % (pump_register, command)
-                )
+                print("Pump: %s, Command passed: %s" % (pump_register, command))
         except Exception as e:
             print("Exception occured during set pump command", e)
