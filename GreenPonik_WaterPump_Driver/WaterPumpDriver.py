@@ -14,7 +14,7 @@
 from time import sleep
 from Adafruit_PureIO.smbus import SMBus
 from adafruit_extended_bus import ExtendedI2C as I2C
-from .packer import Packer
+from GreenPonik_WaterPump_Driver.packer import Packer
 
 
 class WaterPumpDriver:
@@ -117,11 +117,11 @@ class WaterPumpDriver:
         except Exception as e:
             print("Exception occured", e)
 
-    def write(self, register: int, v):
+    def write(self, register: int, value: int):
         """
         @brief write data through i2c bus
-        @param register > int i2c register to read
-        @param v > int/bytearray to write through i2c
+        @param register > int/byte i2c register to read
+        @param v > int/byte to write through i2c
         """
         try:
             device_type = self._smbus.read(self.I2C_REGISTERS["TYPE"])
@@ -130,18 +130,30 @@ class WaterPumpDriver:
                     "Current device type %x is not a water pump" % device_type
                 )
             else:
-                if (
-                    "int" != type(v).__name__
-                    and len(v) > 1
-                    and ("bytearray" == type(v).__name__ or "bytes" == type(v).__name__)
-                ):
-                    self._smbus.write_i2c_block_data(self._address, register, v)
-                elif "int" == type(v).__name__:
-                    self._smbus.write_byte_data(self._address, register, v)
-                else:
-                    raise IOError("cannot write this in smbus/i2c: ", v)
+                with Packer() as packer:
+                    packer.write(register)
+                    packer.write(value)
+                    packer.end()
+                    try:
+                        p = packer.read()
+                        self._smbus.write_bytes(self._address, bytearray(p))
+                    # if (
+                    #     "int" != type(v).__name__
+                    #     and len(v) > 1
+                    #     and ("bytearray" == type(v).__name__ or "bytes" == type(v).__name__)
+                    # ):
+                    #     self._smbus.write_i2c_block_data(self._address, register, v)
+                    # elif "int" == type(v).__name__:
+                    #     self._smbus.write_byte_data(self._address, register, v)
+                    # else:
+
+                    except IOError as ioe:
+                        print("ERROR: {0}, cannot write this in smbus/i2c: ".format(ioe), value)
+                    except Exception as e:
+                        print("ERROR: {0}, cannot write this in smbus/i2c: ".format(e), value)
+
                 if self._debug:
-                    print("Write %s on register: %s" % (v, hex(register)))
+                    print("Write %s on register: %s" % (value, hex(register)))
         except Exception as e:
             print("Exception occured", e)
 

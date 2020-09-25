@@ -1,13 +1,13 @@
 """
 @file Packer.py
 @author Mickael Lehoux <https://github.com/MkLHX>
-@brief Class to allow raspberry I2C Master to deal with ESP32 using ESP32 Slave I2C library
+@brief Class to allow raspberry I2C Master to deal with ESP32
+using ESP32 Slave I2C library
 @date 2020-09-18
 
-The ESP32 Slave I2C library use packing and upacking
-classes to format data
-On python side we need to adapt data format
-before send them through i2c
+The ESP32 Slave I2C library
+use packing and upacking classes to format data
+On python side we need to ENCODE data before send them through i2c
 
 Packet format:
     [0]: start byte (0x02)
@@ -22,19 +22,18 @@ based on:
 https://github.com/gutierrezps/ESP32_I2C_Slave/blob/master/src/WirePacker.h
 https://github.com/gutierrezps/ESP32_I2C_Slave/blob/master/src/WirePacker.cpp
 """
-from .crc8 import Crc8
+from GreenPonik_WaterPump_Driver.crc8 import Crc8
 
 
 class Packer:
-    PACKER_BUFFER_LENGTH = 128
+    PACKER_BUFFER_LENGTH = 128  # because ESP Slave I2C library wait for buffer[128] size
 
     def __init__(self):
         self._frame_start = 0x02
         self._frame_end = 0x04
         self._buffer = [0] * self.PACKER_BUFFER_LENGTH
         self._index = 0
-        self._total_length = 0
-        self._is_packet_open = 0
+        self._is_written = False
         self.reset()
 
     def __enter__(self):
@@ -55,38 +54,22 @@ class Packer:
         the value returned by available() will be decremented.
         @return int -1 if no bytes to read / byte value
         """
-        # value = -1
-        # if not self._is_packet_open and self._index < self._total_length:
-        #     value = self._buffer[self._index]
-        #     self._index += 1
+        if not self._is_written:
+            raise Exception("You need to finish process by using .end() method before read buffer")
         return self._buffer
 
-    def write(self, data):
-        if not self._is_packet_open or self._total_length >= (
-            self.PACKER_BUFFER_LENGTH - 2
-        ):
-            return 0
-        if "bytes" == type(data).__name__:
-            self._buffer[self._index] = int.from_bytes(data, byteorder="big")
-        elif "int" == type(data).__name__:
-            self._buffer[self._index] = data
-        # elif "str" == type(data).__name__:
-        #     self._buffer.extend(data.encode())
-        else:
-            raise TypeError("cannot write this data type on i2c bus")
-
+    def write(self, data: int):
+        if self._is_written:
+            self._is_written = False
+        self._buffer[self._index] = data
         self._index += 1
-        self._total_length = self._index
-        return 1
 
     def end(self):
         """
         @brief Closes the packet. After that, use avaiable() and read()
         to get the packet bytes.
         """
-        self._is_packet_open = False
-        # make room for CRC byte
-        self._index += 1
+        self._index += 1  # add field for CRC byte
         self._buffer[self._index] = self._frame_end
         self._index += 1
         self._total_length = self._index
@@ -100,31 +83,11 @@ class Packer:
         _crc8 = crc.calc(self._buffer[2:payload_range])
 
         self._buffer[self._index - 2] = _crc8
-        #  prepare for reading
-        self._index = 0
+        self._is_written = True
 
     def reset(self):
         """
         @brief Reset the packing process.
         """
         self._buffer[0] = self._frame_start
-        self._index = 2
-        self._total_length = 2
-        self._is_packet_open = True
-
-    def available(self):
-        """
-        @brief Returns how many packet bytes are available to be read
-        """
-        if self._is_packet_open:
-            return 0
-        return self._total_length - self._index
-
-    def packet_length(self):
-        """
-        @brief Returns packet length so far
-        @return int
-        """
-        if self._is_packet_open_:
-            return self._total_length + 2
-        return self._total_length
+        self._index = 2  # keep field for total lenght on index 1
