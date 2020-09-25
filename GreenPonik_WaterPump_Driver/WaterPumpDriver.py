@@ -116,9 +116,11 @@ class WaterPumpDriver:
                 raise Exception("Current device type is not a water pump")
             else:
                 with Packer() as packer:
-                    packer.write()
+                    packer.write(register)
+                    packer.end()
+                    packed = packer.read()
                 raw = self._smbus.read_i2c_block_data(
-                    self._address, register, num_of_bytes
+                    self._address, packed, num_of_bytes
                 )
                 with Unpacker() as unpacker:
                     unpacker.write(raw)
