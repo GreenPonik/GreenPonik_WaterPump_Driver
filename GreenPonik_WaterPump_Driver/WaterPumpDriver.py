@@ -122,12 +122,14 @@ class WaterPumpDriver:
                         packer.write(register)
                         packer.end()
                         packed = packer.read()
+                        print(packed)
                 except Exception as e:
                     print("error on packer {0}".format(e))
                 try:
                     raw = self._smbus.read_i2c_block_data(
                         self._address, packed, num_of_bytes
                     )
+                    print(raw)
                 except Exception as e:
                     print("error on smbus {0}".format(e))
                 try:
@@ -137,7 +139,7 @@ class WaterPumpDriver:
                     with Unpacker() as unpacker:
                         unpacker.write(_decoded)
                         unpacked = unpacker.read()
-
+                        print(unpacked)
                     if self._debug:
                         print(
                             "Read: %s registers start from: %s"
