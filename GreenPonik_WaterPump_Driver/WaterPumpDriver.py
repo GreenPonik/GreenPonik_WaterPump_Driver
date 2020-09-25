@@ -135,7 +135,7 @@ class WaterPumpDriver:
                     print("Response from i2c: ", unpacked)
                 return unpacked
         except Exception as e:
-            print("Exception occured", e)
+            print("Exception occured during read from i2c", e)
 
     def write(self, register: int, value):
         """
@@ -182,7 +182,7 @@ class WaterPumpDriver:
                 if self._debug:
                     print("Write %s on register: %s" % (value, hex(register)))
         except Exception as e:
-            print("Exception occured", e)
+            print("Exception occured during write on i2c", e)
 
     def list_i2c_devices(self):
         """
