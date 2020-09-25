@@ -86,6 +86,23 @@ class WaterPumpDriver:
         self._smbus.close()
         return False  # Don't suppress exceptions.
 
+    def _device_is_water_pump(self):
+        with Packer() as packer:
+            packer.write(
+                self.I2C_REGISTERS["TYPE"]
+            )  # first write => the register address we want read/write
+            packer.end()
+            raw = self._smbus.read_bytes(self._address, bytearray(packer.read()))
+
+        with Unpacker() as unpacker:
+            unpacker.write(raw)
+            device_type = unpacker.read()
+
+        if device_type != self.I2C_DEVICES_TYPE:
+            return False
+        else:
+            return True
+
     def read(self, register: int, num_of_bytes=5):
         """
         @brief read data from i2c bus
@@ -95,73 +112,70 @@ class WaterPumpDriver:
         more information on Packer() and Unpacker() classes
         """
         try:
-            device_type = self._smbus.read_byte_data(
-                self._address, self.I2C_REGISTERS["TYPE"]
-            )
-            if device_type != self.I2C_DEVICES_TYPE:
-                raise Exception(
-                    "Current device type %x is not a water pump" % device_type
-                )
+            if self._device_is_water_pump():
+                raise Exception("Current device type is not a water pump")
             else:
-                # if num_of_bytes > 1:
-                #     raw = self._smbus.read_i2c_block_data(
-                #         self._address, register, num_of_bytes
-                #     )
-                # else:
-                #     raw = self._smbus.read_byte_data(self._address, register)
-
-                raw = self._smbus.read_i2c_block_data(self._address, register, num_of_bytes)
+                with Packer() as packer:
+                    packer.write()
+                raw = self._smbus.read_i2c_block_data(
+                    self._address, register, num_of_bytes
+                )
                 with Unpacker() as unpacker:
                     unpacker.write(raw)
-                    decoded_values = unpacker.read()
+                    unpacked = unpacker.read()
 
                 if self._debug:
                     print(
                         "Read: %s registers start from: %s"
                         % (num_of_bytes, hex(register))
                     )
-                    # print("Raw response from i2c: ", raw)
-                    print("Response from i2c: ", decoded_values)
-                # return raw
-                return decoded_values
+                    print("Response from i2c: ", unpacked)
+                return unpacked
         except Exception as e:
             print("Exception occured", e)
 
-    def write(self, register: int, value: int):
+    def write(self, register: int, value):
         """
         @brief write data through i2c bus
         @param register > int/byte i2c register to read
-        @param v > int/byte to write through i2c
+        @param value > int/list to be write through i2c
         """
         try:
-            device_type = self._smbus.read(self.I2C_REGISTERS["TYPE"])
-            if device_type != self.I2C_DEVICES_TYPE:
-                raise Exception(
-                    "Current device type %x is not a water pump" % device_type
-                )
+            if self._device_is_water_pump():
+                raise Exception("Current device type is not a water pump")
             else:
-                with Packer() as packer:
-                    packer.write(register)
-                    packer.write(value)
-                    packer.end()
-                    try:
-                        p = packer.read()
-                        self._smbus.write_bytes(self._address, bytearray(p))
-                    # if (
-                    #     "int" != type(v).__name__
-                    #     and len(v) > 1
-                    #     and ("bytearray" == type(v).__name__ or "bytes" == type(v).__name__)
-                    # ):
-                    #     self._smbus.write_i2c_block_data(self._address, register, v)
-                    # elif "int" == type(v).__name__:
-                    #     self._smbus.write_byte_data(self._address, register, v)
-                    # else:
-
-                    except IOError as ioe:
-                        print("ERROR: {0}, cannot write this in smbus/i2c: ".format(ioe), value)
-                    except Exception as e:
-                        print("ERROR: {0}, cannot write this in smbus/i2c: ".format(e), value)
-
+                try:
+                    with Packer() as packer:
+                        packer.write(
+                            register
+                        )  # first write => the register address we want read/write
+                        if (
+                            "int" != type(value).__name__
+                            and len(value) > 1
+                            and "list" == type(value).__name__
+                        ):
+                            for elm in value:
+                                packer.write(elm)
+                        elif "int" == type(value).__name__:
+                            packer.write(value)
+                        else:
+                            raise Exception("cannot format this kind of data: ", value)
+                        packer.end()  # finish data format
+                        packed = packer.read()
+                        try:
+                            self._smbus.write_bytes(self._address, bytearray(packed))
+                        except Exception as e:
+                            print(
+                                "ERROR: {0}, cannot send daya in smbus/i2c: ".format(e),
+                                packed,
+                            )
+                except Exception as e:
+                    print(
+                        "ERROR: {0}, cannot use packer yo prepare \
+                            data before send it through smbus/i2c: ".format(
+                            e
+                        )
+                    )
                 if self._debug:
                     print("Write %s on register: %s" % (value, hex(register)))
         except Exception as e:
