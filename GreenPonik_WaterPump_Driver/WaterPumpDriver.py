@@ -124,7 +124,7 @@ class WaterPumpDriver:
                 )
                 # 999 is the default value of c++ buffer
                 # 255 is a raspberry pi glitch to switch unused value to 255
-                decoded = [i for i in list(raw) if i != 255 and i != 999]
+                decoded = [i for i in list(raw) if i != 255]
                 with Unpacker() as unpacker:
                     unpacker.write(decoded)
                     unpacked = unpacker.read()

@@ -61,7 +61,7 @@ class Packer:
                 "You need to finish process by using .end() method before read buffer"
             )
         # 999 is the default value of c++ buffer
-        self._buffer = [i for i in self._buffer if i != 999]
+        self._buffer = [i for i in self._buffer if i != 255]
         return self._buffer
 
     def write(self, data: int):
