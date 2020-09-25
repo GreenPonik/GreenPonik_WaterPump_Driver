@@ -46,6 +46,10 @@ class Unpacker:
         self._last_error = None
 
     def get_last_error(self):
+        """
+        @brief get the last error code and message
+        @return list [error_code, error_text]
+        """
         return self._last_error, self.error_decodes[self._last_error]
 
     def __enter__(self):
