@@ -139,7 +139,7 @@ class WaterPumpDriver:
         except Exception as e:
             print("Exception occured during read from i2c", e)
 
-    def write(self, register: int, value):
+    def write(self, register, value):
         """
         @brief write data through i2c bus
         @param register > int/byte i2c register to read
@@ -218,7 +218,8 @@ class WaterPumpDriver:
         @return int 1=>water pump
         """
         try:
-            t = self.read(int(self.I2C_REGISTERS["TYPE"]))
+            print(type(self.I2C_REGISTERS["TYPE"]).__name__)
+            t = self.read(self.I2C_REGISTERS["TYPE"])
             if self._debug:
                 print("ask for type: %s" % t)
             return t
