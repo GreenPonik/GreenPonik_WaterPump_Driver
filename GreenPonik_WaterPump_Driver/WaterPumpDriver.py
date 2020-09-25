@@ -103,7 +103,7 @@ class WaterPumpDriver:
         else:
             return True
 
-    def read(self, register: int, num_of_bytes=5):
+    def read(self, register, num_of_bytes=5):
         """
         @brief read data from i2c bus
         @param register > int i2c register to read
