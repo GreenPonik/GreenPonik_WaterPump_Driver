@@ -15,6 +15,7 @@ from time import sleep
 from Adafruit_PureIO.smbus import SMBus
 from adafruit_extended_bus import ExtendedI2C as I2C
 from GreenPonik_WaterPump_Driver.packer import Packer
+from GreenPonik_WaterPump_Driver.unpacker import Unpacker
 
 
 class WaterPumpDriver:
@@ -85,11 +86,13 @@ class WaterPumpDriver:
         self._smbus.close()
         return False  # Don't suppress exceptions.
 
-    def read(self, register: int, num_of_bytes=1):
+    def read(self, register: int, num_of_bytes=5):
         """
         @brief read data from i2c bus
         @param register > int i2c register to read
         @param num_of_byte > int number of bytes to read started from the register
+        by default num_of_bytes = 5 because the data format from ESP32 i2c slave is 5 length
+        more information on Packer() and Unpacker() classes
         """
         try:
             device_type = self._smbus.read_byte_data(
@@ -100,20 +103,27 @@ class WaterPumpDriver:
                     "Current device type %x is not a water pump" % device_type
                 )
             else:
-                if num_of_bytes > 1:
-                    raw = self._smbus.read_i2c_block_data(
-                        self._address, register, num_of_bytes
-                    )
-                else:
-                    raw = self._smbus.read_byte_data(self._address, register)
+                # if num_of_bytes > 1:
+                #     raw = self._smbus.read_i2c_block_data(
+                #         self._address, register, num_of_bytes
+                #     )
+                # else:
+                #     raw = self._smbus.read_byte_data(self._address, register)
+
+                raw = self._smbus.read_i2c_block_data(self._address, register, num_of_bytes)
+                with Unpacker() as unpacker:
+                    unpacker.write(raw)
+                    decoded_values = unpacker.read()
 
                 if self._debug:
                     print(
                         "Read: %s registers start from: %s"
                         % (num_of_bytes, hex(register))
                     )
-                    print("Raw response from i2c: ", raw)
-                return raw
+                    # print("Raw response from i2c: ", raw)
+                    print("Response from i2c: ", decoded_values)
+                # return raw
+                return decoded_values
         except Exception as e:
             print("Exception occured", e)
 
