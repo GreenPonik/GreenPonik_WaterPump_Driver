@@ -33,7 +33,7 @@ class Packer:
     def __init__(self):
         self._frame_start = 0x02
         self._frame_end = 0x04
-        self._buffer = [999] * self.PACKER_BUFFER_LENGTH
+        self._buffer = [255] * self.PACKER_BUFFER_LENGTH
         self._index = 0
         self._is_written = False
         self.reset()
