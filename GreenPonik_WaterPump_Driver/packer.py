@@ -26,7 +26,9 @@ from GreenPonik_WaterPump_Driver.crc8 import Crc8
 
 
 class Packer:
-    PACKER_BUFFER_LENGTH = 128  # because ESP Slave I2C library wait for buffer[128] size
+    PACKER_BUFFER_LENGTH = (
+        128  # because ESP Slave I2C library wait for buffer[128] size
+    )
 
     def __init__(self):
         self._frame_start = 0x02
@@ -55,7 +57,10 @@ class Packer:
         @return int -1 if no bytes to read / byte value
         """
         if not self._is_written:
-            raise Exception("You need to finish process by using .end() method before read buffer")
+            raise Exception(
+                "You need to finish process by using .end() method before read buffer"
+            )
+        self._buffer = [i for i in self._buffer if i != 0]
         return self._buffer
 
     def write(self, data: int):
