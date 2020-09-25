@@ -33,7 +33,7 @@ class Packer:
     def __init__(self):
         self._frame_start = 0x02
         self._frame_end = 0x04
-        self._buffer = [0] * self.PACKER_BUFFER_LENGTH
+        self._buffer = [127] * self.PACKER_BUFFER_LENGTH
         self._index = 0
         self._is_written = False
         self.reset()
@@ -60,7 +60,7 @@ class Packer:
             raise Exception(
                 "You need to finish process by using .end() method before read buffer"
             )
-        self._buffer = [i for i in self._buffer if i != 0]
+        self._buffer = [i for i in self._buffer if i != 127]
         return self._buffer
 
     def write(self, data: int):
