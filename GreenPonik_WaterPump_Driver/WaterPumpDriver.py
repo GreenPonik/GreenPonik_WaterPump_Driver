@@ -218,7 +218,7 @@ class WaterPumpDriver:
         @return int 1=>water pump
         """
         try:
-            t = self.read(self.I2C_REGISTERS["TYPE"])
+            t = self.read(int(self.I2C_REGISTERS["TYPE"]))
             if self._debug:
                 print("ask for type: %s" % t)
             return t
