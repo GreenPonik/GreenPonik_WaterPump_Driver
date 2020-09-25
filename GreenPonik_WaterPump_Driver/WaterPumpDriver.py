@@ -122,7 +122,9 @@ class WaterPumpDriver:
                 raw = self._smbus.read_i2c_block_data(
                     self._address, packed, num_of_bytes
                 )
-                decoded = [i for i in list(raw) if i != 127 and i != 255]
+                # 999 is the default value of c++ buffer
+                # 255 is a raspberry pi glitch to switch unused value to 255
+                decoded = [i for i in list(raw) if i != 255 and i != 999]
                 with Unpacker() as unpacker:
                     unpacker.write(decoded)
                     unpacked = unpacker.read()
