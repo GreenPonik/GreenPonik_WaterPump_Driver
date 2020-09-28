@@ -118,7 +118,7 @@ class WaterPumpDriver:
         more information on Packer() and Unpacker() classes
         @return list
         """
-        if False or self._device_is_water_pump():
+        if not self._device_is_water_pump():
             raise Exception("Current device type is not a water pump")
         else:
             try:
@@ -153,7 +153,7 @@ class WaterPumpDriver:
         @param register > int/byte i2c register to read
         @param value > int/list to be write through i2c
         """
-        if False or self._device_is_water_pump():
+        if not self._device_is_water_pump():
             raise Exception("Current device type is not a water pump")
         else:
             try:
