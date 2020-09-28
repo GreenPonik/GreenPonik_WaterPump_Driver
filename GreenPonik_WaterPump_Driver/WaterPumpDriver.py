@@ -139,6 +139,7 @@ class WaterPumpDriver:
             try:
                 # 255 is a raspberry pi glitch to switch unused value to 255
                 _cleaned = [i for i in list(raw) if i != 255]
+                print("cleanded values: ", _cleaned)
                 with Unpacker() as unpacker:
                     unpacker.write(_cleaned)
                     unpacked = unpacker.read()
