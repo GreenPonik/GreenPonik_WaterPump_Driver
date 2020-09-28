@@ -57,6 +57,7 @@ class WaterPumpDriver:
         self._address = addr
         self._smbus = SMBus(bus)
         self._debug = False
+        self._short_timeout = 0.3
 
     @property
     def bus(self):
@@ -93,12 +94,12 @@ class WaterPumpDriver:
                     self.I2C_REGISTERS["TYPE"]
                 )  # first write => the register address we want read/write
                 packer.end()
-                raw = self._smbus.read_bytes(self._address, packer.read())
-
+                self._smbus.write_bytes(self._address, bytearray(packer.read()))
+            sleep(self._short_timeout)
+            raw = self._smbus.read_bytes(self._address, 5)  # read 5 bytes from slave due to data format
             with Unpacker() as unpacker:
                 unpacker.write(raw)
-                device_type = unpacker.read()
-
+                device_type = unpacker.read()[0]
             if device_type != self.I2C_DEVICES_TYPE:
                 return False
             else:
@@ -114,7 +115,6 @@ class WaterPumpDriver:
         by default num_of_bytes = 5 because the data format from ESP32 i2c slave is 5 length
         more information on Packer() and Unpacker() classes
         """
-        # try:
         if self._device_is_water_pump():
             raise Exception("Current device type is not a water pump")
         else:
@@ -127,7 +127,7 @@ class WaterPumpDriver:
             except Exception as e:
                 print("ERROR: on packer {0}".format(e))
             try:
-                sleep(.3)  # let the bus process first write
+                sleep(self._short_timeout)  # let the bus process first write
                 raw = self._smbus.read_bytes(
                     self._address, num_of_bytes
                 )
@@ -136,8 +136,6 @@ class WaterPumpDriver:
             except Exception as e:
                 print("ERROR: on smbus {0}".format(e))
             try:
-                # _cleaned = [i for i in list(raw) if i != 255]
-                # print("cleanded values: ", _cleaned)
                 with Unpacker() as unpacker:
                     unpacker.write(list(raw))
                     unpacked = unpacker.read()
@@ -187,7 +185,7 @@ class WaterPumpDriver:
                             self._smbus.write_bytes(self._address, bytearray(packed))
                         except Exception as e:
                             print(
-                                "ERROR: {0}, cannot send daya in smbus/i2c: ".format(e),
+                                "ERROR: {0}, cannot send data in smbus/i2c: ".format(e),
                                 packed,
                             )
                 except Exception as e:
@@ -234,10 +232,10 @@ class WaterPumpDriver:
         @return int 1=>water pump
         """
         try:
-            t = self.read(self.I2C_REGISTERS["TYPE"])
+            _type = self.read(self.I2C_REGISTERS["TYPE"])[0]
             if self._debug:
-                print("ask for type: %s" % t)
-            return t
+                print("ask for type: %s" % _type)
+            return _type
         except Exception as e:
             print("ERROR: Exception occured during get type", e)
 
@@ -247,7 +245,7 @@ class WaterPumpDriver:
         @return int 2=>firmware rev 2
         """
         try:
-            firmware = self.read(self.I2C_REGISTERS["FIRMWARE"])
+            firmware = self.read(self.I2C_REGISTERS["FIRMWARE"])[0]
             if self._debug:
                 print("ask for firmware: %s" % firmware)
             return firmware

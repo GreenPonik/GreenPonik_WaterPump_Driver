@@ -40,10 +40,6 @@ class Unpacker:
     }
 
     def __init__(self):
-        # self._frame_start = 0x02
-        # self._frame_end = 0x04
-        # self._buffer = []
-        # self._last_error = None
         self.reset()
 
     def get_last_error(self):
