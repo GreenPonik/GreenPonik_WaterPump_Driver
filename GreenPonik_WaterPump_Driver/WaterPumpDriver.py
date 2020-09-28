@@ -134,6 +134,7 @@ class WaterPumpDriver:
                     self._address, register, num_of_bytes
                 )
                 print("smbus raw values", raw)
+                print(list(raw))
             except Exception as e:
                 print("ERROR: on smbus {0}".format(e))
             try:

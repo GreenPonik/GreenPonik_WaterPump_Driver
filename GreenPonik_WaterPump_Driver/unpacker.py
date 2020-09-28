@@ -78,10 +78,10 @@ class Unpacker:
         """
         if data[0] != self._frame_start:
             self._last_error = self.error_codes["INVALID_START"]
-            raise Exception("Invalid start byte")
+            raise Exception("ERROR: Unpacker invalid start byte")
         if data[-1] != self._frame_end:
             self._last_error = self.error_codes["INVALID_END"]
-            raise Exception("Invalid end byte")
+            raise Exception("ERROR: Unpacker invalid end byte")
 
         # check if provided crc8 is good
         # ignore crc and end bytes
@@ -91,6 +91,6 @@ class Unpacker:
         crc = crc8.calc(data[2:payload_range])
         if crc != data[-2]:
             self._last_error = self.error_codes["INVALID_CRC"]
-            raise Exception("Invalid crc8")
+            raise Exception("ERROR: Unpacker invalid crc8")
 
         self._buffer = data[2:-2]
