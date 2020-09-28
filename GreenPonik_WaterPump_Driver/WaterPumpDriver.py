@@ -169,7 +169,7 @@ class WaterPumpDriver:
                         packer.write(
                             register
                         )  # first write => the register address we want read/write
-                        if 0 != value:
+                        if 0 != value:  # if value == 0 we just write register we want read into the i2c bus and then read the value
                             if (
                                 "int" != type(value).__name__
                                 and len(value) > 1
