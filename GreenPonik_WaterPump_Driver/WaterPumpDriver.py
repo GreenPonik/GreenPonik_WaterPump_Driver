@@ -120,10 +120,9 @@ class WaterPumpDriver:
         else:
             try:
                 with Packer() as packer:
-                    packer.write(register)
+                    packer.write(0x00)
                     packer.end()
                     packed = packer.read()
-                    print("packed values", packed)
                     self._smbus.write_bytes(self._address, bytearray(packed))
             except Exception as e:
                 print("ERROR: on packer {0}".format(e))
