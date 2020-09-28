@@ -93,7 +93,7 @@ class WaterPumpDriver:
                     self.I2C_REGISTERS["TYPE"]
                 )  # first write => the register address we want read/write
                 packer.end()
-                raw = self._smbus.read_bytes(self._address, bytearray(packer.read()))
+                raw = self._smbus.read_bytes(self._address, packer.read())
 
             with Unpacker() as unpacker:
                 unpacker.write(raw)
@@ -125,14 +125,14 @@ class WaterPumpDriver:
                     packer.write(register)
                     packer.end()
                     packed = packer.read()
-                    print(packed)
+                    print("packed values", packed)
             except Exception as e:
                 print("ERROR: on packer {0}".format(e))
             try:
                 raw = self._smbus.read_i2c_block_data(
                     self._address, packed, num_of_bytes
                 )
-                print(raw)
+                print("smbus raw values", raw)
             except Exception as e:
                 print("ERROR: on smbus {0}".format(e))
             try:
@@ -141,7 +141,7 @@ class WaterPumpDriver:
                 with Unpacker() as unpacker:
                     unpacker.write(_cleaned)
                     unpacked = unpacker.read()
-                    print(unpacked)
+                    print("unpacked values", unpacked)
                 if self._debug:
                     print(
                         "Read: %s registers start from: %s"
