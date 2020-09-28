@@ -151,7 +151,7 @@ class WaterPumpDriver:
         # except Exception as e:
         #     print("ERROR: Exception occured during read from i2c", e)
 
-    def write(self, register: int, value: int | list = 0):
+    def write(self, register: int, value: int or list = 0):
         """
         @brief write data through i2c bus
         @param register > int/byte i2c register to read
