@@ -101,7 +101,7 @@ class WaterPumpDriver:
             with Unpacker() as unpacker:
                 unpacker.write(raw)
                 device_type = unpacker.read()[0]  # type data is the first field of list
-            if device_type != self.I2C_DEVICES_TYPE:
+            if int(device_type) != self.I2C_DEVICES_TYPE:
                 return False
             else:
                 return True
