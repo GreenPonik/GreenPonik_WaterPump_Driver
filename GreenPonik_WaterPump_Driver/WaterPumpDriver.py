@@ -255,6 +255,7 @@ class WaterPumpDriver:
         @return 8 bytes 5241224745987163 => device uuid
         """
         try:
+            # ask for 12 bytes because uuid is 8 bytes long + 4 bytes for data formatting
             uuid = "".join(map(str, self.read(self.I2C_REGISTERS["UUID"], 12)))
             if self._debug:
                 print("ask for uuid: %s" % uuid)
@@ -268,7 +269,7 @@ class WaterPumpDriver:
         @return int 100=>address 100 = 0x64
         """
         try:
-            add = self.read(self.I2C_REGISTERS["I2C_ADDRESS"])
+            add = self.read(self.I2C_REGISTERS["I2C_ADDRESS"])[0]
             if self._debug:
                 print("ask for add: %s" % add)
             return add
@@ -281,7 +282,7 @@ class WaterPumpDriver:
         @return int 0=>LEDs OFF / 1=>LEDs ON
         """
         try:
-            led_status = self.read(self.I2C_REGISTERS["LED_ACTIVATION"])
+            led_status = self.read(self.I2C_REGISTERS["LED_ACTIVATION"])[0]
             if self._debug:
                 print("ask for led status: %s" % led_status)
             return led_status
@@ -295,7 +296,7 @@ class WaterPumpDriver:
         @return int 0=>pump OFF / 1=>pump ON
         """
         try:
-            status = self.read(pump_register)
+            status = self.read(pump_register)[0]
             if self._debug:
                 print("ask for pump: %s status: %s" % (pump_register, status))
             return status
