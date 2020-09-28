@@ -113,7 +113,7 @@ class WaterPumpDriver:
         by default num_of_bytes = 5 because the data format from ESP32 i2c slave is 5 length
         more information on Packer() and Unpacker() classes
         """
-        try:
+        # try:
             if self._device_is_water_pump():
                 raise Exception("Current device type is not a water pump")
             else:
@@ -149,8 +149,8 @@ class WaterPumpDriver:
                     return unpacked
                 except Exception as e:
                     print("error on unpacker {0}".format(e))
-        except Exception as e:
-            print("Exception occured during read from i2c", e)
+        # except Exception as e:
+        #     print("Exception occured during read from i2c", e)
 
     def write(self, register, value):
         """
