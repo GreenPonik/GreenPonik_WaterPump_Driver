@@ -114,41 +114,41 @@ class WaterPumpDriver:
         more information on Packer() and Unpacker() classes
         """
         # try:
-            if self._device_is_water_pump():
-                raise Exception("Current device type is not a water pump")
-            else:
-                try:
-                    with Packer() as packer:
-                        packer.write(register)
-                        packer.end()
-                        packed = packer.read()
-                        print(packed)
-                except Exception as e:
-                    print("error on packer {0}".format(e))
-                try:
-                    raw = self._smbus.read_i2c_block_data(
-                        self._address, packed, num_of_bytes
+        if self._device_is_water_pump():
+            raise Exception("Current device type is not a water pump")
+        else:
+            try:
+                with Packer() as packer:
+                    packer.write(register)
+                    packer.end()
+                    packed = packer.read()
+                    print(packed)
+            except Exception as e:
+                print("error on packer {0}".format(e))
+            try:
+                raw = self._smbus.read_i2c_block_data(
+                    self._address, packed, num_of_bytes
+                )
+                print(raw)
+            except Exception as e:
+                print("error on smbus {0}".format(e))
+            try:
+                # 999 is the default value of c++ buffer
+                # 255 is a raspberry pi glitch to switch unused value to 255
+                _decoded = [i for i in list(raw) if i != 255]
+                with Unpacker() as unpacker:
+                    unpacker.write(_decoded)
+                    unpacked = unpacker.read()
+                    print(unpacked)
+                if self._debug:
+                    print(
+                        "Read: %s registers start from: %s"
+                        % (num_of_bytes, hex(register))
                     )
-                    print(raw)
-                except Exception as e:
-                    print("error on smbus {0}".format(e))
-                try:
-                    # 999 is the default value of c++ buffer
-                    # 255 is a raspberry pi glitch to switch unused value to 255
-                    _decoded = [i for i in list(raw) if i != 255]
-                    with Unpacker() as unpacker:
-                        unpacker.write(_decoded)
-                        unpacked = unpacker.read()
-                        print(unpacked)
-                    if self._debug:
-                        print(
-                            "Read: %s registers start from: %s"
-                            % (num_of_bytes, hex(register))
-                        )
-                        print("Response from i2c: ", unpacked)
-                    return unpacked
-                except Exception as e:
-                    print("error on unpacker {0}".format(e))
+                    print("Response from i2c: ", unpacked)
+                return unpacked
+            except Exception as e:
+                print("error on unpacker {0}".format(e))
         # except Exception as e:
         #     print("Exception occured during read from i2c", e)
 
