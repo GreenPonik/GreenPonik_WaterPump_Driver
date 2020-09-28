@@ -128,6 +128,7 @@ class WaterPumpDriver:
             except Exception as e:
                 print("ERROR: on packer {0}".format(e))
             try:
+                sleep(.3)  # let the bus process first write
                 raw = self._smbus.read_i2c_block_data(
                     self._address, register, num_of_bytes
                 )
