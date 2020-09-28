@@ -159,7 +159,7 @@ class WaterPumpDriver:
                 with Packer() as packer:
                     # first write => the register address we want read/write
                     packer.write(register)
-                    # if value == 0 we just write register we want read into the i2c bus and then read the value
+                    # if value == None we just write register we want read into the i2c bus and then read the value
                     if None is not value:
                         if int is not type(value) and list is type(value):
                             for elm in value:
