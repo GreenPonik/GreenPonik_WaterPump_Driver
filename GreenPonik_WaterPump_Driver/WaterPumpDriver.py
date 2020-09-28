@@ -119,7 +119,6 @@ class WaterPumpDriver:
         """
         if self._device_is_water_pump():
             raise Exception("Current device type is not a water pump")
-            exit()
         else:
             try:
                 with Packer() as packer:
@@ -153,7 +152,6 @@ class WaterPumpDriver:
         """
         if self._device_is_water_pump():
             raise Exception("Current device type is not a water pump")
-            exit()
         else:
             try:
                 with Packer() as packer:
@@ -302,7 +300,7 @@ class WaterPumpDriver:
         @param int addr => new address
         """
         try:
-            self._smbus.write(self.I2C_REGISTERS["I2C_ADDRESS"], addr)
+            self.write(self.I2C_REGISTERS["I2C_ADDRESS"], addr)
         except Exception as e:
             print("ERROR: Exception occured during set i2c address", e)
 
@@ -312,7 +310,7 @@ class WaterPumpDriver:
         @param int status => new status 0=>OFF / 1=>ON
         """
         try:
-            self._smbus.write(self.I2C_REGISTERS["LED_ACTIVATION"], status)
+            self.write(self.I2C_REGISTERS["LED_ACTIVATION"], status)
         except Exception as e:
             print("ERROR: Exception occured during set LEDs status", e)
 
