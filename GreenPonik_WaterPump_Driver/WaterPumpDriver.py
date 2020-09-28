@@ -120,7 +120,7 @@ class WaterPumpDriver:
         else:
             try:
                 with Packer() as packer:
-                    packer.write(0x00)
+                    packer.write(register)
                     packer.end()
                     packed = packer.read()
                     self._smbus.write_bytes(self._address, bytearray(packed))
@@ -128,8 +128,8 @@ class WaterPumpDriver:
                 print("ERROR: on packer {0}".format(e))
             try:
                 sleep(.3)  # let the bus process first write
-                raw = self._smbus.read_i2c_block_data(
-                    self._address, register, num_of_bytes
+                raw = self._smbus.read_bytes(
+                    self._address, num_of_bytes
                 )
                 print("smbus raw values", raw)
                 print(list(raw))
