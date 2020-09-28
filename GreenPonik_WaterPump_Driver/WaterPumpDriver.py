@@ -126,6 +126,7 @@ class WaterPumpDriver:
             #         print("packed values", packed)
             # except Exception as e:
             #     print("ERROR: on packer {0}".format(e))
+            self.write(register)
             try:
                 # raw = self._smbus.read_i2c_block_data(
                 #     self._address, packed, num_of_bytes
@@ -157,7 +158,7 @@ class WaterPumpDriver:
         # except Exception as e:
         #     print("ERROR: Exception occured during read from i2c", e)
 
-    def write(self, register: int, value):
+    def write(self, register: int, value=0):
         """
         @brief write data through i2c bus
         @param register > int/byte i2c register to read
@@ -172,17 +173,18 @@ class WaterPumpDriver:
                         packer.write(
                             register
                         )  # first write => the register address we want read/write
-                        if (
-                            "int" != type(value).__name__
-                            and len(value) > 1
-                            and "list" == type(value).__name__
-                        ):
-                            for elm in value:
-                                packer.write(elm)
-                        elif "int" == type(value).__name__:
-                            packer.write(value)
-                        else:
-                            raise Exception("cannot format this kind of data: ", value)
+                        if 0 != value:
+                            if (
+                                "int" != type(value).__name__
+                                and len(value) > 1
+                                and "list" == type(value).__name__
+                            ):
+                                for elm in value:
+                                    packer.write(elm)
+                            elif "int" == type(value).__name__:
+                                packer.write(value)
+                            else:
+                                raise Exception("cannot format this kind of data: ", value)
                         packer.end()  # finish data format
                         packed = packer.read()
                         try:
