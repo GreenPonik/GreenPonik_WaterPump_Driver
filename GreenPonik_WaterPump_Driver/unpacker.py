@@ -40,10 +40,11 @@ class Unpacker:
     }
 
     def __init__(self):
-        self._frame_start = 0x02
-        self._frame_end = 0x04
-        self._buffer = []
-        self._last_error = None
+        # self._frame_start = 0x02
+        # self._frame_end = 0x04
+        # self._buffer = []
+        # self._last_error = None
+        self.reset()
 
     def get_last_error(self):
         """
@@ -94,3 +95,9 @@ class Unpacker:
             raise Exception("ERROR: Unpacker invalid crc8")
 
         self._buffer = data[2:-2]
+
+    def reset(self):
+        self._frame_start = 0x02
+        self._frame_end = 0x04
+        self._buffer = []
+        self._last_error = None
