@@ -107,8 +107,6 @@ class WaterPumpDriver:
             print("ERROR: on device type check {0}".format(e))
 
     def read(self, register: int, num_of_bytes: int = 5):
-        print(register)
-        print(num_of_bytes)
         """
         @brief read data from i2c bus
         @param register > int i2c register to read
@@ -120,17 +118,20 @@ class WaterPumpDriver:
         if self._device_is_water_pump():
             raise Exception("Current device type is not a water pump")
         else:
+            # try:
+            #     with Packer() as packer:
+            #         packer.write(register)
+            #         packer.end()
+            #         packed = packer.read()
+            #         print("packed values", packed)
+            # except Exception as e:
+            #     print("ERROR: on packer {0}".format(e))
             try:
-                with Packer() as packer:
-                    packer.write(register)
-                    packer.end()
-                    packed = packer.read()
-                    print("packed values", packed)
-            except Exception as e:
-                print("ERROR: on packer {0}".format(e))
-            try:
+                # raw = self._smbus.read_i2c_block_data(
+                #     self._address, packed, num_of_bytes
+                # )
                 raw = self._smbus.read_i2c_block_data(
-                    self._address, packed, num_of_bytes
+                    self._address, register, num_of_bytes
                 )
                 print("smbus raw values", raw)
             except Exception as e:
