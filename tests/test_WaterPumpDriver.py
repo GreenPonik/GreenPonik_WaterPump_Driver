@@ -18,14 +18,24 @@ sys.modules["fcntl"] = FcntlMock()
 
 class TestWaterPumpDriver(unittest.TestCase):
     @patch("GreenPonik_WaterPump_Driver.WaterPumpDriver.WaterPumpDriver")
+    def test_get_type(self, mock):
+        d = mock()
+        expected = 1
+        d.get_type.return_value = expected
+        device_type = d.get_type()
+        self.assertIsNotNone(device_type)
+        self.assertTrue(type(device_type) is int)
+        self.assertEqual(expected, device_type)
+
+    @patch("GreenPonik_WaterPump_Driver.WaterPumpDriver.WaterPumpDriver")
     def test_get_uuid(self, mock):
         d = mock()
-        expected = b"\x55\x89\x63\x35\x54\x21\x25\x47"
+        list_from_i2c = [0, 0, 204, 80, 227, 181, 155, 20]
+        expected = ''.join(map(str, list_from_i2c))
         d.get_uuid.return_value = expected
         uuid = d.get_uuid()
         self.assertIsNotNone(uuid)
-        self.assertTrue(type(uuid).__name__ == "bytes")
-        self.assertTrue(len(uuid) == 8)
+        self.assertTrue(type(uuid) is str)
         self.assertEqual(expected, uuid)
 
     @patch("GreenPonik_WaterPump_Driver.WaterPumpDriver.WaterPumpDriver")

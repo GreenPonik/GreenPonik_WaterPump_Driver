@@ -12,8 +12,7 @@ class TestPacker(unittest.TestCase):
         packer = Packer()
         packer.write(127)
         packer.end()
-        packed = packer.read()
-        packed = [i for i in packed if i != 255]
+        packed = [i for i in packer.read() if i != 0]
         expected = [2, 5, 127, 185, 4]
         self.assertIsNotNone(packed)
         self.assertTrue(type(packed).__name__ == "list")

@@ -255,7 +255,7 @@ class WaterPumpDriver:
         @return 8 bytes 5241224745987163 => device uuid
         """
         try:
-            uuid = ''.join(self.read(self.I2C_REGISTERS["UUID"], 12))
+            uuid = "".join(map(str, self.read(self.I2C_REGISTERS["UUID"], 12)))
             if self._debug:
                 print("ask for uuid: %s" % uuid)
             return uuid
