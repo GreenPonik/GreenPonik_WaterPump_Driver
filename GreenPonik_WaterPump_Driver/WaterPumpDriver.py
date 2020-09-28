@@ -118,19 +118,16 @@ class WaterPumpDriver:
         if self._device_is_water_pump():
             raise Exception("Current device type is not a water pump")
         else:
-            # try:
-            #     with Packer() as packer:
-            #         packer.write(register)
-            #         packer.end()
-            #         packed = packer.read()
-            #         print("packed values", packed)
-            # except Exception as e:
-            #     print("ERROR: on packer {0}".format(e))
-            self.write(register)
             try:
-                # raw = self._smbus.read_i2c_block_data(
-                #     self._address, packed, num_of_bytes
-                # )
+                with Packer() as packer:
+                    packer.write(register)
+                    packer.end()
+                    packed = packer.read()
+                    print("packed values", packed)
+                    self._smbus.write_bytes(self._address, bytearray(packed))
+            except Exception as e:
+                print("ERROR: on packer {0}".format(e))
+            try:
                 raw = self._smbus.read_i2c_block_data(
                     self._address, register, num_of_bytes
                 )
@@ -139,11 +136,10 @@ class WaterPumpDriver:
             except Exception as e:
                 print("ERROR: on smbus {0}".format(e))
             try:
-                # 255 is a raspberry pi glitch to switch unused value to 255
-                _cleaned = [i for i in list(raw) if i != 255]
-                print("cleanded values: ", _cleaned)
+                # _cleaned = [i for i in list(raw) if i != 255]
+                # print("cleanded values: ", _cleaned)
                 with Unpacker() as unpacker:
-                    unpacker.write(_cleaned)
+                    unpacker.write(list(raw))
                     unpacked = unpacker.read()
                     print("unpacked values", unpacked)
                 if self._debug:
