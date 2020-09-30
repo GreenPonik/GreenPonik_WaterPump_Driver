@@ -189,7 +189,7 @@ class WaterPumpDriver:
         @return list of addresses
         """
         try:
-            with I2C(self._bus_number) as i2c:
+            with I2C(self._bus) as i2c:
                 scan = i2c.scan()
                 if self._debug:
                     print("I2c devices found: ", scan)
