@@ -92,31 +92,34 @@ class WaterPumpDriver:
         try:
             device_type = None
             try:
-                with Packer() as packer:
-                    # first write => the register address we want read/write
-                    packer.write(self.I2C_REGISTERS["TYPE"])
-                    packer.end()
-                    self._smbus.write_bytes(self._address, bytearray(packer.read()))
+                # with Packer() as packer:
+                #     # first write => the register address we want read/write
+                #     packer.write(self.I2C_REGISTERS["TYPE"])
+                #     packer.end()
+                #     self._smbus.write_bytes(self._address, bytearray(packer.read()))
+                self._smbus.write_quick(self._address)
             except Exception as e:
-                print("ERROR: packer failed, {}".format(e))
+                print("ERROR: on packer, {}".format(e))
             try:
                 sleep(self._short_timeout)
                 raw = self._smbus.read_bytes(
                     self._address, 5
                 )  # read 5 bytes from slave due to data format
             except Exception as e:
-                print("ERROR: cannot get raw data from i2c, {}".format(e))
+                print("ERROR: on smbus, {}".format(e))
             try:
                 with Unpacker() as unpacker:
                     unpacker.write(raw)
-                    device_type = unpacker.read()[0]  # type data is the first field of list
+                    device_type = unpacker.read()[
+                        0
+                    ]  # type data is the first field of list
             except Exception as e:
-                print("ERROR: cannot unpack raw data, {}".format(e))
+                print("ERROR: on unpack, {}".format(e))
 
             return device_type == self.I2C_DEVICES_TYPE
 
         except Exception as e:
-            print("ERROR: on device type check {0}".format(e))
+            print("ERROR: on device type check {}".format(e))
 
     def read(self, register: int, num_of_bytes: int = 5):
         """
@@ -137,18 +140,18 @@ class WaterPumpDriver:
                     packed = packer.read()
                     self._smbus.write_bytes(self._address, bytearray(packed))
             except Exception as e:
-                print("ERROR: on packer {0}".format(e))
+                print("ERROR: on packer, {}".format(e))
             try:
                 sleep(self._short_timeout)  # let the bus process first write
                 raw = self._smbus.read_bytes(self._address, num_of_bytes)
             except Exception as e:
-                print("ERROR: on smbus {0}".format(e))
+                print("ERROR: on smbus, {}".format(e))
             try:
                 with Unpacker() as unpacker:
                     unpacker.write(list(raw))
                     unpacked = unpacker.read()
             except Exception as e:
-                print("ERROR: on unpacker {0}".format(e))
+                print("ERROR: on unpacker, {}".format(e))
             if self._debug:
                 print(
                     "Read: %s registers start from: %s" % (num_of_bytes, hex(register))
