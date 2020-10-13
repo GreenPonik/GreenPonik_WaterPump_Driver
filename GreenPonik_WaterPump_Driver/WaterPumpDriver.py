@@ -130,34 +130,32 @@ class WaterPumpDriver:
         more information on Packer() and Unpacker() classes
         @return list
         """
-        if not self._device_is_water_pump():
-            raise Exception("Current device type is not a water pump")
-        else:
-            try:
-                with Packer() as packer:
-                    packer.write(register)
-                    packer.end()
-                    packed = packer.read()
-                    self._smbus.write_bytes(self._address, bytearray(packed))
-            except Exception as e:
-                print("ERROR: on packer, {}".format(e))
-            try:
-                sleep(self._short_timeout)  # let the bus process first write
-                raw = self._smbus.read_bytes(self._address, num_of_bytes)
-            except Exception as e:
-                print("ERROR: on smbus, {}".format(e))
-            try:
-                with Unpacker() as unpacker:
-                    unpacker.write(list(raw))
-                    unpacked = unpacker.read()
-            except Exception as e:
-                print("ERROR: on unpacker, {}".format(e))
-            if self._debug:
-                print(
-                    "Read: %s registers start from: %s" % (num_of_bytes, hex(register))
-                )
-                print("Get values: ", unpacked)
-            return unpacked
+        # if not self._device_is_water_pump():
+        #     raise Exception("Current device type is not a water pump")
+        # else:
+        try:
+            with Packer() as packer:
+                packer.write(register)
+                packer.end()
+                packed = packer.read()
+                self._smbus.write_bytes(self._address, bytearray(packed))
+        except Exception as e:
+            print("ERROR: on packer, {}".format(e))
+        try:
+            sleep(self._short_timeout)  # let the bus process first write
+            raw = self._smbus.read_bytes(self._address, num_of_bytes)
+        except Exception as e:
+            print("ERROR: on smbus, {}".format(e))
+        try:
+            with Unpacker() as unpacker:
+                unpacker.write(list(raw))
+                unpacked = unpacker.read()
+        except Exception as e:
+            print("ERROR: on unpacker, {}".format(e))
+        if self._debug:
+            print("Read: %s registers start from: %s" % (num_of_bytes, hex(register)))
+            print("Get values: ", unpacked)
+        return unpacked
 
     def write(self, register: int, value=None):
         """
@@ -165,36 +163,36 @@ class WaterPumpDriver:
         @param register > int/byte i2c register to read
         @param value > int/list to be write through i2c
         """
-        if not self._device_is_water_pump():
-            raise Exception("Current device type is not a water pump")
-        else:
-            try:
-                with Packer() as packer:
-                    # first write => the register address we want read/write
-                    packer.write(register)
-                    # if value == None we just write register we want read into the i2c bus and then read the value
-                    if None is not value:
-                        if int is not type(value) and list is type(value):
-                            for elm in value:
-                                packer.write(elm)
-                        elif int is type(value):
-                            packer.write(value)
-                        else:
-                            raise Exception("cannot format this kind of data: ", value)
-                    packer.end()  # finish data formatting
-                    packed = packer.read()
-            except Exception as e:
-                print("ERROR: {0}, cannot use packer yo prepare data".format(e))
+        # if not self._device_is_water_pump():
+        #     raise Exception("Current device type is not a water pump")
+        # else:
+        try:
+            with Packer() as packer:
+                # first write => the register address we want read/write
+                packer.write(register)
+                # if value == None we just write register we want read into the i2c bus and then read the value
+                if None is not value:
+                    if int is not type(value) and list is type(value):
+                        for elm in value:
+                            packer.write(elm)
+                    elif int is type(value):
+                        packer.write(value)
+                    else:
+                        raise Exception("cannot format this kind of data: ", value)
+                packer.end()  # finish data formatting
+                packed = packer.read()
+        except Exception as e:
+            print("ERROR: {0}, cannot use packer yo prepare data".format(e))
 
-            try:
-                self._smbus.write_bytes(self._address, bytearray(packed))
-            except Exception as e:
-                print(
-                    "ERROR: {0}, when write data on i2c: ".format(e),
-                    packed,
-                )
-            if self._debug:
-                print("Write %s on register: %s" % (value, hex(register)))
+        try:
+            self._smbus.write_bytes(self._address, bytearray(packed))
+        except Exception as e:
+            print(
+                "ERROR: {0}, when write data on i2c: ".format(e),
+                packed,
+            )
+        if self._debug:
+            print("Write %s on register: %s" % (value, hex(register)))
 
     def list_i2c_devices(self):
         """
