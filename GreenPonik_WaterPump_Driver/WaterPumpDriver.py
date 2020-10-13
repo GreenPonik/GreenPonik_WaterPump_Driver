@@ -92,12 +92,12 @@ class WaterPumpDriver:
         try:
             device_type = None
             try:
-                # with Packer() as packer:
-                #     # first write => the register address we want read/write
-                #     packer.write(self.I2C_REGISTERS["TYPE"])
-                #     packer.end()
-                #     self._smbus.write_bytes(self._address, bytearray(packer.read()))
-                self._smbus.write_quick(self._address)
+                with Packer() as packer:
+                    # first write => the register address we want read/write
+                    packer.write(self.I2C_REGISTERS["TYPE"])
+                    packer.end()
+                    self._smbus.write_bytes(self._address, bytearray(packer.read()))
+                # self._smbus.write_quick(self._address)
             except Exception as e:
                 print("ERROR: on packer, {}".format(e))
             try:
