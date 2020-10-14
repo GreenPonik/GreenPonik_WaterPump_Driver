@@ -134,28 +134,32 @@ class WaterPumpDriver:
         #     raise Exception("Current device type is not a water pump")
         # else:
         try:
-            with Packer() as packer:
-                packer.write(register)
-                packer.end()
-                packed = packer.read()
-                self._smbus.write_bytes(self._address, bytearray(packed))
+            unpacked = None
+            try:
+                with Packer() as packer:
+                    packer.write(register)
+                    packer.end()
+                    packed = packer.read()
+                    self._smbus.write_bytes(self._address, bytearray(packed))
+            except Exception as e:
+                print("ERROR: on packer, {}".format(e))
+            try:
+                sleep(self._short_timeout)  # let the bus process first write
+                raw = self._smbus.read_bytes(self._address, num_of_bytes)
+            except Exception as e:
+                print("ERROR: on smbus, {}".format(e))
+            try:
+                with Unpacker() as unpacker:
+                    unpacker.write(list(raw))
+                    unpacked = unpacker.read()
+            except Exception as e:
+                print("ERROR: on unpacker, {}".format(e))
+            if self._debug:
+                print("Read: %s registers start from: %s" % (num_of_bytes, hex(register)))
+                print("Get values: ", unpacked)
+            return unpacked
         except Exception as e:
-            print("ERROR: on packer, {}".format(e))
-        try:
-            sleep(self._short_timeout)  # let the bus process first write
-            raw = self._smbus.read_bytes(self._address, num_of_bytes)
-        except Exception as e:
-            print("ERROR: on smbus, {}".format(e))
-        try:
-            with Unpacker() as unpacker:
-                unpacker.write(list(raw))
-                unpacked = unpacker.read()
-        except Exception as e:
-            print("ERROR: on unpacker, {}".format(e))
-        if self._debug:
-            print("Read: %s registers start from: %s" % (num_of_bytes, hex(register)))
-            print("Get values: ", unpacked)
-        return unpacked
+            print("ERROR: on read, {}".format(e))
 
     def write(self, register: int, value=None):
         """
