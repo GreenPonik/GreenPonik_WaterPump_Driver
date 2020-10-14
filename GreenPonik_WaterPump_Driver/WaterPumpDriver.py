@@ -57,7 +57,7 @@ class WaterPumpDriver:
         self._address = addr
         self._smbus = SMBus(bus)
         self._debug = False
-        self._short_timeout = 0.3
+        self._short_timeout = 0.5
         self._long_timeout = 1.3
 
     @property
