@@ -149,6 +149,7 @@ class WaterPumpDriver:
             try:
                 sleep(self._short_timeout)  # let the bus process first write
                 raw = self._smbus.read_bytes(self._address, num_of_bytes)
+                print(raw)
             except Exception as e:
                 print("ERROR: on smbus, {}".format(e))
             try:
