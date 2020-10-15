@@ -1,8 +1,8 @@
 # install from github
-# pip3 install -e git+https://github.com/GreenPonik/GreenPonik_WaterPump_Driver.git#egg=greenponik-waterpump-driver
+# pip install -e git+https://github.com/GreenPonik/GreenPonik_WaterPump_Driver.git#egg=greenponik-waterpump-driver
 
 # upgrade from github
-# pip3 install -e git+https://github.com/GreenPonik/GreenPonik_WaterPump_Driver.git#egg=greenponik-waterpump-driver --upgrade
+# pip install -e git+https://github.com/GreenPonik/GreenPonik_WaterPump_Driver.git#egg=greenponik-waterpump-driver --upgrade
 
 
 adafruit-blinka>=5.2.3

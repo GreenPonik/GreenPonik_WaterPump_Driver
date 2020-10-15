@@ -79,7 +79,6 @@ class WaterPumpDriver:
     def __enter__(self):
         """Context manager enter function."""
         # Just return this object so it can be used in a with statement, like
-        # with WaterPumpDriver(bus=1, addr=100) as driver:
         #     # do stuff!
         return self
 
@@ -87,6 +86,10 @@ class WaterPumpDriver:
         """Context manager exit function, ensures resources are cleaned up."""
         self._smbus.close()
         return False  # Don't suppress exceptions.
+
+    def __del__(self):
+        """Clean up any resources instance."""
+        self._smbus.close()
 
     def _device_is_water_pump(self):
         try:
@@ -224,6 +227,18 @@ class WaterPumpDriver:
             print("ERROR: Exception occured during print all registers values", e)
 
     # ----- getters ----- #
+
+    def get_all(self):
+        """
+        @brief get the device type
+        @return int 1=>water pump
+        """
+        try:
+            for reg in self.I2C_REGISTERS:
+                print(reg)
+                return dict()
+        except Exception as e:
+            print("ERROR: Exception occured during get type", e)
 
     def get_type(self):
         """
