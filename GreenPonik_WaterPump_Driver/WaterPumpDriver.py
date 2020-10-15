@@ -96,6 +96,7 @@ class WaterPumpDriver:
             device_type = None
             try:
                 with Packer() as packer:
+                    packer.debug = True
                     # first write => the register address we want read/write
                     packer.write(self.I2C_REGISTERS["TYPE"])
                     packer.end()
@@ -108,10 +109,13 @@ class WaterPumpDriver:
                 raw = self._smbus.read_bytes(
                     self._address, 5
                 )  # read 5 bytes from slave due to data format
+                if self._debug:
+                    print("Raw data from i2c: ", raw)
             except Exception as e:
                 print("ERROR: on smbus, {}".format(e))
             try:
                 with Unpacker() as unpacker:
+                    unpacker.debug = True
                     unpacker.write(raw)
                     device_type = unpacker.read()[
                         0
@@ -149,7 +153,8 @@ class WaterPumpDriver:
             try:
                 sleep(self._short_timeout)  # let the bus process first write
                 raw = self._smbus.read_bytes(self._address, num_of_bytes)
-                print(raw)
+                if self._debug:
+                    print("Raw data from i2c: ", raw)
             except Exception as e:
                 print("ERROR: on smbus, {}".format(e))
             try:
@@ -159,7 +164,9 @@ class WaterPumpDriver:
             except Exception as e:
                 print("ERROR: on unpacker, {}".format(e))
             if self._debug:
-                print("Read: %s registers start from: %s" % (num_of_bytes, hex(register)))
+                print(
+                    "Read: %s registers start from: %s" % (num_of_bytes, hex(register))
+                )
                 print("Get values: ", unpacked)
             return unpacked
         except Exception as e:
