@@ -39,6 +39,17 @@ class WaterPumpDriver:
         "PUMP_4_STATE": 0x08,  # i2c Read / Write
         "WATER_PUMP_STATE": 0x09,  # i2c Read / Write
     }
+    """@brief
+    Ordering Pumps Registers
+    Array key=>value pump number to i2c register converter
+    """
+    PUMP_REGISTERS = {
+        0: I2C_REGISTERS["WATER_PUMP_STATE"],
+        1: I2C_REGISTERS["PUMP_1_STATE"],
+        2: I2C_REGISTERS["PUMP_2_STATE"],
+        3: I2C_REGISTERS["PUMP_3_STATE"],
+        4: I2C_REGISTERS["PUMP_4_STATE"],
+    }
 
     """@brief
     I2C Devices
