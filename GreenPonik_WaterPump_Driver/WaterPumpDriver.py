@@ -251,7 +251,10 @@ class WaterPumpDriver:
         @return dict all i2c registers values
         """
         try:
-            return self.read(self.I2C_REGISTERS["TYPE"], len(self.I2C_REGISTERS) - 1)
+            _all = self.read(self.I2C_REGISTERS["TYPE"], len(self.I2C_REGISTERS) - 1)
+            if self._debug:
+                print("ask for all registers: %s" % _all)
+            return _all
         except Exception as e:
             print("ERROR: Exception occured during get type", e)
 
