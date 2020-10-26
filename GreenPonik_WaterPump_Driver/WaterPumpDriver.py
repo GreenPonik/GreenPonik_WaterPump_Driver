@@ -233,18 +233,13 @@ class WaterPumpDriver:
         except Exception as e:
             print("ERROR: Exception occured during get i2c devices list", e)
 
-    def get_all_registers_values(self):
+    def print_all_registers_values(self):
         """
         @brief print all i2c register value on the cli
         """
         try:
-            # registers = self.I2C_REGISTERS
-            # for reg in range(0, len(registers)):
-            # print("Register: %s, Value: %s" % (hex(reg), self.read(reg)))
-            return [
-                {register[0]: self.read(register)}
-                for register in self.I2C_REGISTERS.items()
-            ]
+            for reg in range(0, len(self.I2C_REGISTERS)):
+                print("Register: %s, Value: %s" % (hex(reg), self.read(reg)))
         except Exception as e:
             print("ERROR: Exception occured during get all registers values", e)
 
@@ -253,12 +248,10 @@ class WaterPumpDriver:
     def get_all(self):
         """
         @brief get the device type
-        @return int 1=>water pump
+        @return dict all i2c registers values
         """
         try:
-            for reg in self.I2C_REGISTERS:
-                print(reg)
-                return dict()
+            return self.read(self.I2C_REGISTERS["TYPE"], len(self.I2C_REGISTERS) - 1)
         except Exception as e:
             print("ERROR: Exception occured during get type", e)
 
