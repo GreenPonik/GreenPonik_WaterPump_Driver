@@ -33,11 +33,11 @@ class WaterPumpDriver:
         "UUID": 0x02,  # i2c Read Only
         "I2C_ADDRESS": 0x03,  # i2c Read / Write
         "LED_ACTIVATION": 0x04,  # i2c Read / Write
-        "PUMP_1_STATE": 0x05,  # i2c Read / Write
-        "PUMP_2_STATE": 0x06,  # i2c Read / Write
-        "PUMP_3_STATE": 0x07,  # i2c Read / Write
-        "PUMP_4_STATE": 0x08,  # i2c Read / Write
-        "WATER_PUMP_STATE": 0x09,  # i2c Read / Write
+        "WATER_PUMP_STATE": 0x05,  # i2c Read / Write
+        "PUMP_1_STATE": 0x06,  # i2c Read / Write
+        "PUMP_2_STATE": 0x07,  # i2c Read / Write
+        "PUMP_3_STATE": 0x08,  # i2c Read / Write
+        "PUMP_4_STATE": 0x09,  # i2c Read / Write
     }
     """@brief
     Ordering Pumps Registers
@@ -233,16 +233,20 @@ class WaterPumpDriver:
         except Exception as e:
             print("ERROR: Exception occured during get i2c devices list", e)
 
-    def print_all_registers_values(self):
+    def get_all_registers_values(self):
         """
         @brief print all i2c register value on the cli
         """
         try:
-            registers = self.I2C_REGISTERS
-            for reg in range(0, len(registers)):
-                print("Register: %s, Value: %s" % (hex(reg), self.read(reg)))
+            # registers = self.I2C_REGISTERS
+            # for reg in range(0, len(registers)):
+            # print("Register: %s, Value: %s" % (hex(reg), self.read(reg)))
+            return [
+                {register[0]: self.read(register)}
+                for register in self.I2C_REGISTERS.items()
+            ]
         except Exception as e:
-            print("ERROR: Exception occured during print all registers values", e)
+            print("ERROR: Exception occured during get all registers values", e)
 
     # ----- getters ----- #
 
