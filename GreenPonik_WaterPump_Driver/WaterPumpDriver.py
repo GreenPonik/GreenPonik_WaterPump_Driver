@@ -68,8 +68,8 @@ class WaterPumpDriver:
         self._address = addr
         self._smbus = SMBus(bus)
         self._debug = False
-        self._short_timeout = 0.5
-        self._long_timeout = 1.3
+        self._short_timeout = 0.6
+        self._long_timeout = 1.4
 
     @property
     def bus(self):
@@ -251,7 +251,8 @@ class WaterPumpDriver:
         @return dict all i2c registers values
         """
         try:
-            _all = self.read(self.I2C_REGISTERS["TYPE"], len(self.I2C_REGISTERS) + 4)
+            # 13 registers to read from the i2c slave to get all values
+            _all = self.read(self.I2C_REGISTERS["TYPE"], 13)
             if self._debug:
                 print("ask for all registers: %s" % _all)
             return _all
