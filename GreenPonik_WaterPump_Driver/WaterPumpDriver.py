@@ -252,7 +252,7 @@ class WaterPumpDriver:
         """
         try:
             packer = Packer()
-            packer.write(self._address)
+            packer.write(self.I2C_REGISTERS["TYPE"])
             packer.end()
             packed = packer.read()
             self._smbus.write_bytes(self._address, bytearray(packed))
