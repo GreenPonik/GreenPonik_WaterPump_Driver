@@ -251,6 +251,12 @@ class WaterPumpDriver:
         @return dict all i2c registers values
         """
         try:
+            packer = Packer()
+            packer.write(self._address)
+            packer.end()
+            packed = packer.read()
+            self._smbus.write_bytes(self._address, bytearray(packed))
+            sleep(self._short_timeout)
             # 13 registers to read from the i2c slave to get all values
             # add 4 bytes to add data format
             _all = self._smbus.read_bytes(self._address, 17)
