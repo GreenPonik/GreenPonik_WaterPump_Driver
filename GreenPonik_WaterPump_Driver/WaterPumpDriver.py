@@ -38,6 +38,7 @@ class WaterPumpDriver:
         "PUMP_2_STATE": 0x07,  # i2c Read / Write
         "PUMP_3_STATE": 0x08,  # i2c Read / Write
         "PUMP_4_STATE": 0x09,  # i2c Read / Write
+        "ALL": 0x20,  # i2c Read
     }
     """@brief
     Ordering Pumps Registers
@@ -252,7 +253,7 @@ class WaterPumpDriver:
         """
         try:
             packer = Packer()
-            packer.write(self.I2C_REGISTERS["TYPE"])
+            packer.write(self.I2C_REGISTERS["ALL"])
             packer.end()
             packed = packer.read()
             self._smbus.write_bytes(self._address, bytearray(packed))
