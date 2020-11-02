@@ -252,7 +252,8 @@ class WaterPumpDriver:
         """
         try:
             # 13 registers to read from the i2c slave to get all values
-            _all = self.read(self.I2C_REGISTERS["TYPE"], 13)
+            # add 4 bytes to add data format
+            _all = self._smbus.read_bytes(self._address, 17)
             if self._debug:
                 print("ask for all registers: %s" % _all)
             return _all
