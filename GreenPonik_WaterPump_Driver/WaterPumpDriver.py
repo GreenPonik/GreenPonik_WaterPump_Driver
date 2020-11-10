@@ -301,7 +301,7 @@ class WaterPumpDriver:
         except Exception as e:
             print("ERROR: Exception occured during get uuid", e)
 
-    def get_address(self):
+    def get_i2c_address(self):
         """
         @brief get the device i2c address
         @return int 100=>address 100 = 0x64
