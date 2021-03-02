@@ -81,8 +81,24 @@ class WaterPumpDriver:
         return self._addr
 
     @property
+    def short_timeout(self):
+        return self._short_timeout
+
+    @property
+    def long_timeout(self):
+        return self._long_timeout
+
+    @property
     def debug(self):
         return self._debug
+
+    @short_timeout.setter
+    def short_timeout(self, t):
+        self._short_timeout = t
+
+    @long_timeout.setter
+    def long_timeout(self, t):
+        self._long_timeout = t
 
     @debug.setter
     def debug(self, d):
