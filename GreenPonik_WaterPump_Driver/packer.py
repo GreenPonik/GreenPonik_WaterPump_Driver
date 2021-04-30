@@ -78,7 +78,7 @@ class Packer:
         @param int data
         """
         if self._debug:
-            print("Data to unpack: ", data)
+            print("Data to pack: ", data)
         if self._is_written:  # allow write after .end()
             self._is_written = False
         self._buffer[self._index] = data
