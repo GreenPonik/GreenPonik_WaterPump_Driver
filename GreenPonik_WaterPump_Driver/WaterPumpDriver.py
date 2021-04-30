@@ -78,7 +78,7 @@ class WaterPumpDriver:
 
     @property
     def address(self):
-        return self._addr
+        return self._address
 
     @property
     def short_timeout(self):
@@ -174,6 +174,8 @@ class WaterPumpDriver:
                     packer.write(register)
                     packer.end()
                     packed = packer.read()
+                    if self._debug:
+                        print("packed: ", packed)
                     self._smbus.write_bytes(self._address, bytearray(packed))
             except Exception as e:
                 print("ERROR: on packer, {}".format(e))
