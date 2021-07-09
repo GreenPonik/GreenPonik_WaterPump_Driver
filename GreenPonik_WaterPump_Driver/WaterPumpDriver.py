@@ -310,14 +310,16 @@ class WaterPumpDriver:
         @brief get the device uuid
         @return 8 bytes 5241224745987163 => device uuid
         """
-        try:
-            # ask for 12 bytes because uuid is 8 bytes long + 4 bytes for data formatting
-            uuid = "".join(map(str, self.read(self.I2C_REGISTERS["UUID"], 12)))
-            if self._debug:
-                print("ask for uuid: %s" % uuid)
-            return uuid
-        except Exception as e:
-            print("ERROR: Exception occured during get uuid", e)
+        # 2021/07/09 this method crash i2c bus waiting for patch
+        raise NotImplementedError("feature not implemented yet")
+        # try:
+        #     # ask for 12 bytes because uuid is 8 bytes long + 4 bytes for data formatting
+        #     uuid = " ".join(map(str, self.read(self.I2C_REGISTERS["UUID"], 12)))
+        #     if self._debug:
+        #         print("ask for uuid: %s" % uuid)
+        #     return uuid
+        # except Exception as e:
+        #     print("ERROR: Exception occured during get uuid", e)
 
     def get_i2c_address(self):
         """
