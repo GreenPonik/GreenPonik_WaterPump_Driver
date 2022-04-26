@@ -55,11 +55,15 @@ if __name__ == "__main__":
             driver.set_pump_command(
                 driver.I2C_REGISTERS["PUMP_1_STATE"],
                 driver.I2C_COMMANDS["ON"],
+                100,
+                3000
             )
             time.sleep(2)
             driver.set_pump_command(
                 driver.I2C_REGISTERS["PUMP_1_STATE"],
                 driver.I2C_COMMANDS["OFF"],
+                0,
+                0
             )
     except Exception as e:
         print("Exception occured", e)
