@@ -381,14 +381,23 @@ class WaterPumpDriver:
         except Exception as e:
             print("ERROR: Exception occured during set LEDs status", e)
 
-    def set_pump_command(self, pump_register: int, command: int):
+    def set_pump_command(self, pump_register: int, command: int, power: int, duration: int):
         """
         @brief set command pump
         @param int pump_register to set
         @param int command 0=>pump OFF / 1=>pump ON
+        @param int power 0=>min pump power / 100=>max pump power
+        @param int duration is a duration in milliseconds to pump run
         """
         try:
-            self.write(pump_register, command)
+            durationdata32_24 = (duration & 0xFF000000) >> 24
+            durationdata24_16 = (duration & 0xFF0000) >> 16
+            durationdata16_8 = (duration & 0xFF00) >> 8
+            durationdata8_0 = (duration & 0xFF)
+
+            data = list((command, power, durationdata32_24, durationdata24_16, durationdata16_8, durationdata8_0))
+            print(data)
+            self.write(pump_register, data)
             if self._debug:
                 print("Pump: %s, Command passed: %s" % (pump_register, command))
         except Exception as e:
