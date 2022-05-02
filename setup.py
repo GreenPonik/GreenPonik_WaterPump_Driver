@@ -27,11 +27,11 @@ here = pathlib.Path(__file__).parent.resolve()
 long_description = (here / "README.md").read_text(encoding="utf-8")
 
 # Load the package's version.py module as a dictionary.
-from version import __version__
+# from version import __version__
 
 setup(
     name=NAME,
-    version=__version__,
+    version="0.0.16",
     author=AUTHOR,
     author_email=EMAIL,
     description=DESCRIPTION,
