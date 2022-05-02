@@ -31,7 +31,7 @@ long_description = (here / "README.md").read_text(encoding="utf-8")
 
 setup(
     name=NAME,
-    version="0.0.16",
+    version="0.0.17",
     author=AUTHOR,
     author_email=EMAIL,
     description=DESCRIPTION,
